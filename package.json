@@ -8,7 +8,9 @@
     "dev": "vinxi dev",
     "build": "vinxi build",
     "start": "vinxi start",
-    "supabase:typegen": "supabase gen types typescript --local > supabase/types.gen.ts"
+    "supabase:typegen": "supabase gen types typescript --local > supabase/types.gen.ts",
+    "supabase:migration-create": "supabase db diff | supabase migration new",
+    "supabase:migration-deploy": "supabase migration up --include-all --local"
   },
   "keywords": [],
   "author": "",

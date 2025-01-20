@@ -223,7 +223,7 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "Sessions_game_id_fkey"
+            foreignKeyName: "sessions_game_id_fkey"
             columns: ["game_id"]
             isOneToOne: false
             referencedRelation: "games"
