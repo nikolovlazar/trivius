@@ -3,9 +3,12 @@ import {
   Outlet,
   ScrollRestoration,
   createRootRoute,
+  ScriptOnce,
 } from "@tanstack/react-router";
 import { Meta, Scripts } from "@tanstack/start";
 import type { ReactNode } from "react";
+
+import globalCss from "../global.css?url";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -21,6 +24,7 @@ export const Route = createRootRoute({
         title: "Trivius",
       },
     ],
+    links: [{ rel: "stylesheet", href: globalCss }],
   }),
   component: RootComponent,
 });
@@ -35,7 +39,7 @@ function RootComponent() {
 
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html>
+    <html suppressHydrationWarning>
       <head>
         <Meta />
       </head>
@@ -43,6 +47,12 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
         {children}
         <ScrollRestoration />
         <Scripts />
+        <ScriptOnce>
+          {`document.documentElement.classList.toggle(
+            'dark',
+            localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+            )`}
+        </ScriptOnce>
       </body>
     </html>
   );
