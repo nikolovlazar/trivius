@@ -5,20 +5,22 @@ import {
   createRootRoute,
   ScriptOnce,
   CatchBoundary,
-} from "@tanstack/react-router";
-import { Meta, Scripts } from "@tanstack/start";
-import type { ReactNode } from "react";
+  Link,
+} from '@tanstack/react-router';
+import { Meta, Scripts } from '@tanstack/start';
+import type { ReactNode } from 'react';
 
-import globalCss from "../global.css?url";
-import { fetchUser } from "@/functions/fetch-user";
+import globalCss from '../global.css?url';
+import { fetchUser } from '@/functions/fetch-user';
+import { Button } from '@/components/ui/button';
 
 const loadClientCookies = async (name: string) => {
-  const { getClientCookies } = await import("@/utils/client-cookies");
+  const { getClientCookies } = await import('@/utils/client-cookies');
   return getClientCookies(name);
 };
 
 const loadServerCookies = async (name: string) => {
-  const { getServerCookies } = await import("@/utils/server-cookies");
+  const { getServerCookies } = await import('@/utils/server-cookies');
   return getServerCookies(name);
 };
 
@@ -26,36 +28,45 @@ export const Route = createRootRoute({
   head: () => ({
     meta: [
       {
-        charSet: "utf-8",
+        charSet: 'utf-8',
       },
       {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1",
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1',
       },
       {
-        title: "Trivius",
+        title: 'Trivius',
       },
     ],
-    links: [{ rel: "stylesheet", href: globalCss }],
+    links: [{ rel: 'stylesheet', href: globalCss }],
   }),
   component: RootComponent,
   beforeLoad: async () => {
     let cookie: string | undefined;
 
-    if (typeof window === "undefined") {
-      cookie = await loadServerCookies("trivius-auth");
+    if (typeof window === 'undefined') {
+      cookie = await loadServerCookies('trivius-auth');
     } else {
-      cookie = await loadClientCookies("trivius-auth");
+      cookie = await loadClientCookies('trivius-auth');
     }
 
     if (cookie) {
-      const { access_token } = JSON.parse(atob(cookie.replace("base64-", "")));
+      const { access_token } = JSON.parse(atob(cookie.replace('base64-', '')));
       const { user } = await fetchUser({ data: access_token });
       return { user };
     }
 
     return { authCookie: undefined };
   },
+  notFoundComponent: () => (
+    <div className='flex flex-col items-center justify-center h-screen'>
+      <h1 className='text-4xl font-bold'>Not found</h1>
+      <p className='text-lg'>The page you are looking for does not exist.</p>
+      <Button asChild className='mt-4'>
+        <Link to='/'>Go to home</Link>
+      </Button>
+    </div>
+  ),
 });
 
 function RootComponent() {
@@ -74,7 +85,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       </head>
       <body>
         <CatchBoundary
-          getResetKey={() => "reset"}
+          getResetKey={() => 'reset'}
           onCatch={(error) => console.error(error)}
         >
           {children}
