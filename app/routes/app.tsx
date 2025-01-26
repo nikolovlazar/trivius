@@ -73,8 +73,8 @@ function RouteComponent() {
   };
 
   return (
-    <div>
-      <nav className='bg-white shadow-sm'>
+    <div className='flex flex-col min-h-screen bg-muted'>
+      <nav className='bg-white border-b'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
           <div className='flex justify-between items-center h-16'>
             <h1 className='text-2xl font-bold'>Trivius</h1>
@@ -82,7 +82,7 @@ function RouteComponent() {
           </div>
         </div>
       </nav>
-      <main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
+      <main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full bg-background mt-10 rounded-lg border'>
         <div className='flex justify-between items-center mb-6'>
           <h2 className='text-xl font-semibold'>Your Trivia Games</h2>
           <Button onClick={() => setIsNewGameModalOpen(true)}>
