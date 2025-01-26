@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { createFileRoute, redirect, useRouter } from '@tanstack/react-router';
 
-import { Game, GameInsert, Session } from '@/types';
+import { Game, GameInsert, Session, SessionInsert } from '@/types';
 import { Button } from '@/components/ui/button';
 import { LogoutButton } from '@/components/logout-button';
 import { TriviaGameItem } from '@/components/trivia-game-item';
@@ -65,11 +65,19 @@ function RouteComponent() {
     }
   };
 
-  const handleManageSessions = (id: string) => {
+  const handleManageSessions = (id: number) => {
     const game = games.find((game) => game.game.id === id);
     if (game) {
       setSelectedGame(game);
     }
+  };
+
+  const handleNewSession = (newSession: SessionInsert) => {
+    console.log('NEW SESSION', newSession);
+  };
+
+  const handleStopSession = (session: Session) => {
+    console.log('STOP SESSION', session);
   };
 
   return (
@@ -107,10 +115,11 @@ function RouteComponent() {
           <SessionManager
             gameId={selectedGame.game.id}
             gameName={selectedGame.game.title}
-            initialSessions={selectedGame.sessions}
+            sessions={selectedGame.sessions}
             isOpen={!!selectedGame}
             onClose={() => setSelectedGame(null)}
-            onUpdateSessions={(updatedSessions) => {}}
+            onNewSession={handleNewSession}
+            onStopSession={handleStopSession}
           />
         )}
 

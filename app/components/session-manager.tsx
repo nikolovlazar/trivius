@@ -14,21 +14,22 @@ import { SessionShareModal } from './session-share-modal';
 interface SessionManagerProps {
   gameId: number;
   gameName: string;
-  initialSessions: Session[];
+  sessions: Session[];
   isOpen: boolean;
   onClose: () => void;
-  onUpdateSessions: (sessions: Session[]) => void;
+  onNewSession: (newSession: SessionInsert) => void;
+  onStopSession: (session: Session) => void;
 }
 
 export function SessionManager({
   gameId,
   gameName,
-  initialSessions,
+  sessions,
   isOpen,
   onClose,
-  onUpdateSessions,
+  onNewSession,
+  onStopSession,
 }: SessionManagerProps) {
-  const [sessions, setSessions] = useState<Session[]>(initialSessions);
   const [shareSession, setShareSession] = useState<Session | null>(null);
 
   const startNewSession = () => {
@@ -37,17 +38,14 @@ export function SessionManager({
       game_id: gameId,
       open: true,
     };
-    const updatedSessions = [...sessions, newSession];
-    setSessions(updatedSessions);
-    onUpdateSessions(updatedSessions);
+    onNewSession(newSession);
   };
 
   const endSession = (sessionId: number) => {
-    const updatedSessions = sessions.map((session) =>
-      session.id === sessionId ? { ...session, open: false } : session
-    );
-    setSessions(updatedSessions as Session[]);
-    onUpdateSessions(updatedSessions as Session[]);
+    const session = sessions.find((session) => session.id === sessionId);
+    if (!session) return;
+
+    onStopSession(session);
   };
 
   return (

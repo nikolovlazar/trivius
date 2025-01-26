@@ -25,7 +25,7 @@ export function SessionShareModal({
   gameTitle,
 }: ShareModalProps) {
   const [copied, setCopied] = useState(false);
-  const inviteLink = `https://trivius.app/join/${sessionId}`;
+  const inviteLink = `${window.location.origin}/join/${sessionId}`;
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(inviteLink);
