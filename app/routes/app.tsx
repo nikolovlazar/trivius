@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { createFileRoute, redirect, useRouter } from '@tanstack/react-router';
 
 import { Game, GameInsert, Session } from '@/types';
@@ -9,7 +10,6 @@ import { getGames } from '@/functions/get-games';
 import { SessionManager } from '@/components/session-manager';
 import { NewGameModal } from '@/components/new-game-modal';
 import { createGame } from '@/functions/create-game';
-import { toast } from 'sonner';
 import { deleteGame } from '@/functions/delete-game';
 import { ConfirmDeletion } from '@/components/confirm-deletion';
 
