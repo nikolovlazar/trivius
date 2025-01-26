@@ -1,8 +1,8 @@
-import { getSupabaseServerClient } from "@/utils/supabase/server";
-import { createServerFn } from "@tanstack/start";
+import { getSupabaseServerClient } from '@/utils/supabase/server';
+import { createServerFn } from '@tanstack/start';
 
 export const fetchUser = createServerFn()
-  .validator((jwt: string) => jwt)
+  .validator((jwt: string | undefined) => jwt)
   .handler(async ({ data: jwt }) => {
     const supabase = getSupabaseServerClient();
     const { data, error: _error } = await supabase.auth.getUser(jwt);
@@ -11,5 +11,11 @@ export const fetchUser = createServerFn()
       return { user: undefined };
     }
 
-    return { user: data.user.email };
+    return {
+      user: {
+        id: data.user.id,
+        email: data.user.email,
+        name: data.user.user_metadata.name,
+      },
+    };
   });

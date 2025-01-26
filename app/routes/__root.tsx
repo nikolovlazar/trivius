@@ -13,6 +13,7 @@ import type { ReactNode } from 'react';
 import globalCss from '../global.css?url';
 import { fetchUser } from '@/functions/fetch-user';
 import { Button } from '@/components/ui/button';
+import { Toaster } from '@/components/ui/sonner';
 
 const loadClientCookies = async (name: string) => {
   const { getClientCookies } = await import('@/utils/client-cookies');
@@ -97,6 +98,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
             localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
             )`}
         </ScriptOnce>
+        <Toaster />
         <Scripts />
       </body>
     </html>
