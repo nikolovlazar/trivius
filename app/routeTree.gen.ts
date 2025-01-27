@@ -13,7 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as SignupImport } from './routes/signup'
 import { Route as SigninImport } from './routes/signin'
-import { Route as AppImport } from './routes/app'
+import { Route as AppRouteImport } from './routes/app/route'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
@@ -30,7 +30,7 @@ const SigninRoute = SigninImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AppRoute = AppImport.update({
+const AppRouteRoute = AppRouteImport.update({
   id: '/app',
   path: '/app',
   getParentRoute: () => rootRoute,
@@ -57,7 +57,7 @@ declare module '@tanstack/react-router' {
       id: '/app'
       path: '/app'
       fullPath: '/app'
-      preLoaderRoute: typeof AppImport
+      preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRoute
     }
     '/signin': {
@@ -81,14 +81,14 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/app': typeof AppRoute
+  '/app': typeof AppRouteRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/app': typeof AppRoute
+  '/app': typeof AppRouteRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
 }
@@ -96,7 +96,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/app': typeof AppRoute
+  '/app': typeof AppRouteRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
 }
@@ -112,14 +112,14 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AppRoute: typeof AppRoute
+  AppRouteRoute: typeof AppRouteRoute
   SigninRoute: typeof SigninRoute
   SignupRoute: typeof SignupRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AppRoute: AppRoute,
+  AppRouteRoute: AppRouteRoute,
   SigninRoute: SigninRoute,
   SignupRoute: SignupRoute,
 }
@@ -144,7 +144,7 @@ export const routeTree = rootRoute
       "filePath": "index.tsx"
     },
     "/app": {
-      "filePath": "app.tsx"
+      "filePath": "app/route.tsx"
     },
     "/signin": {
       "filePath": "signin.tsx"
