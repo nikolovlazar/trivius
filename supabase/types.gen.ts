@@ -207,7 +207,7 @@ export type Database = {
           game_id: number
           id?: number
           open?: boolean
-          start_time?: string
+          start_time: string
         }
         Update: {
           current_question?: number | null
