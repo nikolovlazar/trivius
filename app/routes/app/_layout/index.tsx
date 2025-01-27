@@ -3,14 +3,13 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 
 import { Game, Session } from "@/types";
 import { Button } from "@/components/ui/button";
-import { LogoutButton } from "@/components/logout-button";
 import { TriviaGameItem } from "./-components/trivia-game-item";
 import { SessionManager } from "./-components/session-manager";
 import { NewGameModal } from "./-components/new-game-modal";
 import { createServerFn } from "@tanstack/start";
 import { getSupabaseServerClient } from "@/utils/supabase/server";
 
-export const Route = createFileRoute("/app")({
+export const Route = createFileRoute("/app/_layout/")({
   component: RouteComponent,
   beforeLoad: ({ context }) => {
     if (!context.user) {
@@ -48,55 +47,45 @@ function RouteComponent() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-muted">
-      <nav className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <h1 className="text-2xl font-bold">Trivius</h1>
-            <LogoutButton />
-          </div>
-        </div>
-      </nav>
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full bg-background mt-10 rounded-lg border">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold">Your Trivia Games</h2>
-          <Button onClick={() => setIsNewGameModalOpen(true)}>
-            Create New Trivia Game
-          </Button>
-        </div>
+    <>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-xl font-semibold">Your Trivia Games</h2>
+        <Button onClick={() => setIsNewGameModalOpen(true)}>
+          Create New Trivia Game
+        </Button>
+      </div>
 
-        <div className="space-y-4">
-          {games.map(({ game, sessions }) => (
-            <TriviaGameItem
-              key={game.id}
-              id={game.id}
-              title={game.title}
-              sessionCount={sessions.length}
-              onManageSessions={() => handleManageSessions(game.id)}
-            />
-          ))}
-        </div>
-
-        {selectedGame && (
-          <SessionManager
-            gameId={selectedGame.game.id}
-            gameName={selectedGame.game.title}
-            sessions={selectedGame.sessions}
-            isOpen={!!selectedGame}
-            onClose={() => setSelectedGame(null)}
-            onNewSession={handleNewSession}
-            onStopSession={handleStopSession}
+      <div className="space-y-4">
+        {games.map(({ game, sessions }) => (
+          <TriviaGameItem
+            key={game.id}
+            id={game.id}
+            title={game.title}
+            sessionCount={sessions.length}
+            onManageSessions={() => handleManageSessions(game.id)}
           />
-        )}
+        ))}
+      </div>
 
-        {isNewGameModalOpen && (
-          <NewGameModal
-            isOpen={isNewGameModalOpen}
-            onClose={() => setIsNewGameModalOpen(false)}
-          />
-        )}
-      </main>
-    </div>
+      {selectedGame && (
+        <SessionManager
+          gameId={selectedGame.game.id}
+          gameName={selectedGame.game.title}
+          sessions={selectedGame.sessions}
+          isOpen={!!selectedGame}
+          onClose={() => setSelectedGame(null)}
+          onNewSession={handleNewSession}
+          onStopSession={handleStopSession}
+        />
+      )}
+
+      {isNewGameModalOpen && (
+        <NewGameModal
+          isOpen={isNewGameModalOpen}
+          onClose={() => setIsNewGameModalOpen(false)}
+        />
+      )}
+    </>
   );
 }
 

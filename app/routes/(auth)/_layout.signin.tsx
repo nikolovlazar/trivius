@@ -24,7 +24,7 @@ export const signinFn = createServerFn()
     }
   });
 
-export const Route = createFileRoute("/(auth)/signin")({
+export const Route = createFileRoute("/(auth)/_layout/signin")({
   component: SigninPage,
 });
 
@@ -43,32 +43,26 @@ function SigninPage() {
   });
 
   return (
-    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-      <div className="w-full max-w-sm">
-        <Auth
-          actionText="Sign in"
-          status={signInMutation.status}
-          onSubmit={(e: any) => {
-            const formData = new FormData(e.target as HTMLFormElement);
+    <Auth
+      actionText="Sign in"
+      status={signInMutation.status}
+      onSubmit={(e: any) => {
+        const formData = new FormData(e.target as HTMLFormElement);
 
-            signInMutation.mutate({
-              data: {
-                email: formData.get("email") as string,
-                password: formData.get("password") as string,
-              },
-            });
-          }}
-          afterSubmit={
-            signInMutation.data ? (
-              <>
-                <div className="text-red-400">
-                  {signInMutation.data.message}
-                </div>
-              </>
-            ) : null
-          }
-        />
-      </div>
-    </div>
+        signInMutation.mutate({
+          data: {
+            email: formData.get("email") as string,
+            password: formData.get("password") as string,
+          },
+        });
+      }}
+      afterSubmit={
+        signInMutation.data ? (
+          <>
+            <div className="text-red-400">{signInMutation.data.message}</div>
+          </>
+        ) : null
+      }
+    />
   );
 }

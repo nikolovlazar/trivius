@@ -24,7 +24,7 @@ export const signupFn = createServerFn()
     }
   });
 
-export const Route = createFileRoute("/(auth)/signup")({
+export const Route = createFileRoute("/(auth)/_layout/signup")({
   component: SignupPage,
 });
 
@@ -43,33 +43,29 @@ function SignupPage() {
   });
 
   return (
-    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-      <div className="w-full max-w-sm">
-        <Auth
-          actionText="Sign up"
-          status={signUpMutation.status}
-          onSubmit={(e: any) => {
-            const formData = new FormData(e.target as HTMLFormElement);
+    <Auth
+      actionText="Sign up"
+      status={signUpMutation.status}
+      onSubmit={(e: any) => {
+        const formData = new FormData(e.target as HTMLFormElement);
 
-            signUpMutation.mutate({
-              data: {
-                email: formData.get("email") as string,
-                password: formData.get("password") as string,
-              },
-            });
-          }}
-          afterSubmit={
-            signUpMutation.data ? (
-              <>
-                <div className="text-red-400">
-                  {signUpMutation.data.message}
-                  {signUpMutation.data.error.message}
-                </div>
-              </>
-            ) : null
-          }
-        />
-      </div>
-    </div>
+        signUpMutation.mutate({
+          data: {
+            email: formData.get("email") as string,
+            password: formData.get("password") as string,
+          },
+        });
+      }}
+      afterSubmit={
+        signUpMutation.data ? (
+          <>
+            <div className="text-red-400">
+              {signUpMutation.data.message}
+              {signUpMutation.data.error.message}
+            </div>
+          </>
+        ) : null
+      }
+    />
   );
 }
