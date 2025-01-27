@@ -1,4 +1,4 @@
-import { Auth } from "@/components/auth";
+import { Auth } from "./-auth";
 import { useMutation } from "@/hooks/use-mutation";
 import { getSupabaseServerClient } from "@/utils/supabase/server";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
@@ -24,7 +24,7 @@ export const signupFn = createServerFn()
     }
   });
 
-export const Route = createFileRoute("/signup")({
+export const Route = createFileRoute("/(auth)/signup")({
   component: SignupPage,
 });
 
