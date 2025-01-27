@@ -1,23 +1,24 @@
-import { useState } from 'react';
-import { toast } from 'sonner';
-import { createFileRoute, redirect, useRouter } from '@tanstack/react-router';
+import { useState } from "react";
+import { toast } from "sonner";
+import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
 
-import { Game, GameInsert, Session, SessionInsert } from '@/types';
-import { Button } from '@/components/ui/button';
-import { LogoutButton } from '@/components/logout-button';
-import { TriviaGameItem } from '@/components/trivia-game-item';
-import { getGames } from '@/functions/get-games';
-import { SessionManager } from '@/components/session-manager';
-import { NewGameModal } from '@/components/new-game-modal';
-import { createGame } from '@/functions/create-game';
-import { deleteGame } from '@/functions/delete-game';
-import { ConfirmDeletion } from '@/components/confirm-deletion';
+import { Game, GameInsert, Session, SessionInsert } from "@/types";
+import { Button } from "@/components/ui/button";
+import { LogoutButton } from "@/components/logout-button";
+import { TriviaGameItem } from "@/components/trivia-game-item";
+import { getGames } from "@/functions/get-games";
+import { SessionManager } from "@/components/session-manager";
+import { NewGameModal } from "@/components/new-game-modal";
+import { createGame } from "@/functions/create-game";
+import { deleteGame } from "@/functions/delete-game";
+import { ConfirmDeletion } from "@/components/confirm-deletion";
+import { createSession } from "@/functions/create-session";
 
-export const Route = createFileRoute('/app')({
+export const Route = createFileRoute("/app")({
   component: RouteComponent,
   beforeLoad: ({ context }) => {
     if (!context.user) {
-      return redirect({ to: '/signin', statusCode: 307 });
+      return redirect({ to: "/signin", statusCode: 307 });
     }
     return { user: context.user };
   },
@@ -44,10 +45,10 @@ function RouteComponent() {
       if (newGame) {
         setIsNewGameModalOpen(false);
         router.invalidate();
-        toast.success('Game created!');
+        toast.success("Game created!");
       }
     } catch (error) {
-      toast.error('Failed to create game');
+      toast.error("Failed to create game");
     }
   };
 
@@ -59,9 +60,9 @@ function RouteComponent() {
     try {
       await deleteGame({ data: id });
       router.invalidate();
-      toast.success('Game deleted!');
+      toast.success("Game deleted!");
     } catch (error) {
-      toast.error('Failed to delete game');
+      toast.error("Failed to delete game");
     }
   };
 
@@ -72,33 +73,43 @@ function RouteComponent() {
     }
   };
 
-  const handleNewSession = (newSession: SessionInsert) => {
-    console.log('NEW SESSION', newSession);
+  const handleNewSession = async (newSession: SessionInsert) => {
+    const session = await createSession({
+      data: {
+        ...newSession,
+        user_id: user!.id,
+      },
+    });
+    if (session) {
+      toast.success("Session created!");
+      await router.invalidate();
+      handleManageSessions(session.game_id);
+    }
   };
 
   const handleStopSession = (session: Session) => {
-    console.log('STOP SESSION', session);
+    console.log("STOP SESSION", session);
   };
 
   return (
-    <div className='flex flex-col min-h-screen bg-muted'>
-      <nav className='bg-white border-b'>
-        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-          <div className='flex justify-between items-center h-16'>
-            <h1 className='text-2xl font-bold'>Trivius</h1>
+    <div className="flex flex-col min-h-screen bg-muted">
+      <nav className="bg-white border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <h1 className="text-2xl font-bold">Trivius</h1>
             <LogoutButton />
           </div>
         </div>
       </nav>
-      <main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full bg-background mt-10 rounded-lg border'>
-        <div className='flex justify-between items-center mb-6'>
-          <h2 className='text-xl font-semibold'>Your Trivia Games</h2>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full bg-background mt-10 rounded-lg border">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-semibold">Your Trivia Games</h2>
           <Button onClick={() => setIsNewGameModalOpen(true)}>
             Create New Trivia Game
           </Button>
         </div>
 
-        <div className='space-y-4'>
+        <div className="space-y-4">
           {games.map((game) => (
             <TriviaGameItem
               key={game.game.id}
@@ -136,7 +147,7 @@ function RouteComponent() {
             isOpen={!!deletingGame}
             onClose={() => setDeletingGame(null)}
             onConfirm={() => handleGameDelete(deletingGame.id)}
-            title='Delete Game'
+            title="Delete Game"
             itemName={deletingGame!.title}
           />
         )}
