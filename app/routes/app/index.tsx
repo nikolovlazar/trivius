@@ -3,13 +3,13 @@ import { createFileRoute } from '@tanstack/react-router';
 
 import { Button } from '@/domains/shared/components/ui/button';
 
-import { GameRow } from '@/domains/game/ui/game-row';
 import { NewGameModal } from '@/domains/game/ui/new-game-modal';
 import { getGames } from '@/domains/game/functions/get-games.function';
 import { Game } from '@/domains/game/entities/game';
 
 import { SessionManager } from '@/domains/session/ui/session-manager';
 import { Session } from '@/domains/session/entities/session';
+import { GamesTable } from '@/domains/game/ui/games-table';
 
 export const Route = createFileRoute('/app/')({
   component: RouteComponent,
@@ -48,17 +48,7 @@ function RouteComponent() {
         </Button>
       </div>
 
-      <div className='space-y-4'>
-        {games.map(({ game, sessions }) => (
-          <GameRow
-            key={game.id}
-            id={game.id}
-            title={game.title}
-            sessionCount={sessions.length}
-            onManageSessions={() => handleManageSessions(game.id)}
-          />
-        ))}
-      </div>
+      <GamesTable games={games} onManageSessions={handleManageSessions} />
 
       {selectedGame && (
         <SessionManager

@@ -38,7 +38,7 @@ export function SessionManager({
   onStopSession,
 }: SessionManagerProps) {
   const router = useRouter();
-  const { user } = useRouteContext({ from: '/_app' });
+  const { user } = useRouteContext({ from: '/app' });
   const [shareSession, setShareSession] = useState<Session | null>(null);
 
   const startNewSession = async () => {
@@ -72,7 +72,7 @@ export function SessionManager({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className='sm:max-w-[425px]'>
+        <DialogContent className='w-full sm:max-w-xl'>
           <DialogHeader>
             <DialogTitle>Manage Sessions for {gameName}</DialogTitle>
             <DialogDescription>
