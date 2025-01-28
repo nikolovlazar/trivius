@@ -8,9 +8,9 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/shared/components/ui/dialog';
-import { Input } from '@/shared/components/ui/input';
-import { Button } from '@/shared/components/ui/button';
+} from '@/domains/shared/components/ui/dialog';
+import { Input } from '@/domains/shared/components/ui/input';
+import { Button } from '@/domains/shared/components/ui/button';
 
 import { createGame } from '@/domains/game/functions/create-game.function';
 

@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { Check, Copy, Share } from 'lucide-react';
 
-import { Button } from '@/shared/components/ui/button';
-import { Input } from '@/shared/components/ui/input';
+import { Button } from '@/domains/shared/components/ui/button';
+import { Input } from '@/domains/shared/components/ui/input';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from '@/shared/components/ui/dialog';
+} from '@/domains/shared/components/ui/dialog';
 
 interface ShareModalProps {
   isOpen: boolean;

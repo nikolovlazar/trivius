@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router';
 
-import { Button } from '@/shared/components/ui/button';
+import { Button } from '@/domains/shared/components/ui/button';
 
 export function NotFound() {
   return (

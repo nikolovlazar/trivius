@@ -1,7 +1,7 @@
 import { Play } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 
-import { Button } from '@/shared/components/ui/button';
+import { Button } from '@/domains/shared/components/ui/button';
 
 interface GameRowProps {
   id: number;

@@ -3,7 +3,7 @@ import { createServerFn } from '@tanstack/start';
 
 import { Game } from '@/domains/game/entities/game';
 
-import { getSupabaseServerClient } from '@/shared/utils/supabase/server';
+import { getSupabaseServerClient } from '@/domains/shared/utils/supabase/server';
 
 export const createGame = createServerFn()
   .validator(

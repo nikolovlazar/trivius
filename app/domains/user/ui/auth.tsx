@@ -5,10 +5,10 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/shared/components/ui/card';
-import { Input } from '@/shared/components/ui/input';
-import { Label } from '@/shared/components/ui/label';
-import { Button } from '@/shared/components/ui/button';
+} from '@/domains/shared/components/ui/card';
+import { Input } from '@/domains/shared/components/ui/input';
+import { Label } from '@/domains/shared/components/ui/label';
+import { Button } from '@/domains/shared/components/ui/button';
 
 export function Auth({
   actionText,

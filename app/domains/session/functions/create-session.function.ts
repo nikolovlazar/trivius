@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/start';
 import { z } from 'vinxi';
 
-import { getSupabaseServerClient } from '@/shared/utils/supabase/server';
+import { getSupabaseServerClient } from '@/domains/shared/utils/supabase/server';
 
 export const createSession = createServerFn()
   .validator(

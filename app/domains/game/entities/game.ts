@@ -1,4 +1,4 @@
-import type { MakeOptional } from '@/shared/utils/make-optional-type';
+import type { MakeOptional } from '@/domains/shared/utils/make-optional-type';
 
 export type Game = {
   answer_window: number | null;

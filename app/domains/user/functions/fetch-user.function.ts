@@ -1,6 +1,6 @@
 import { createServerFn } from '@tanstack/start';
 
-import { getSupabaseServerClient } from '@/shared/utils/supabase/server';
+import { getSupabaseServerClient } from '@/domains/shared/utils/supabase/server';
 
 export const fetchUser = createServerFn()
   .validator((jwt: string | undefined) => jwt)

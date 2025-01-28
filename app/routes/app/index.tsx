@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 
-import { Button } from '@/shared/components/ui/button';
+import { Button } from '@/domains/shared/components/ui/button';
 
 import { GameRow } from '@/domains/game/ui/game-row';
 import { NewGameModal } from '@/domains/game/ui/new-game-modal';

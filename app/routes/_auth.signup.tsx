@@ -1,6 +1,6 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 
-import { useMutation } from '@/shared/hooks/use-mutation'
+import { useMutation } from '@/domains/shared/hooks/use-mutation'
 
 import { Auth } from '@/domains/user/ui/auth'
 import { signupFn } from '@/domains/user/functions/sign-up.function'

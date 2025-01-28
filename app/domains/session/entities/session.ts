@@ -1,4 +1,4 @@
-import { MakeOptional } from '@/shared/utils/make-optional-type';
+import { MakeOptional } from '@/domains/shared/utils/make-optional-type';
 
 export type Session = {
   current_question: number | null;

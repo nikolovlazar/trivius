@@ -5,7 +5,7 @@ import {
   redirect,
 } from '@tanstack/react-router';
 
-import { LogoutButton } from '@/shared/components/logout-button';
+import { LogoutButton } from '@/domains/shared/components/logout-button';
 
 export const Route = createFileRoute('/app')({
   component: RouteComponent,

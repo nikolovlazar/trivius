@@ -10,8 +10,8 @@ import { lazy, type ReactNode } from 'react';
 
 import globalCss from '../global.css?url';
 import { fetchUser } from '@/domains/user/functions/fetch-user.function';
-import { Toaster } from '@/shared/components/ui/sonner';
-import { NotFound } from '@/shared/components/not-found';
+import { Toaster } from '@/domains/shared/components/ui/sonner';
+import { NotFound } from '@/domains/shared/components/not-found';
 import { AUTH_COOKIE_NAME } from '@/config';
 
 const TanStackRouterDevtools =
@@ -27,12 +27,16 @@ const TanStackRouterDevtools =
       );
 
 const loadClientCookies = async (name: string) => {
-  const { getClientCookies } = await import('@/shared/utils/client-cookies');
+  const { getClientCookies } = await import(
+    '@/domains/shared/utils/client-cookies'
+  );
   return getClientCookies(name);
 };
 
 const loadServerCookies = async (name: string) => {
-  const { getServerCookies } = await import('@/shared/utils/server-cookies');
+  const { getServerCookies } = await import(
+    '@/domains/shared/utils/server-cookies'
+  );
   return getServerCookies(name);
 };
 

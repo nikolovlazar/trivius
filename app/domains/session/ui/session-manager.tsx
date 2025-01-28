@@ -3,14 +3,14 @@ import { useRouteContext, useRouter } from '@tanstack/react-router';
 import { Share2 } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { Button } from '@/shared/components/ui/button';
+import { Button } from '@/domains/shared/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from '@/shared/components/ui/dialog';
+} from '@/domains/shared/components/ui/dialog';
 import { SessionShareModal } from '@/domains/session/ui/session-share-modal';
 import type {
   Session,

@@ -1,4 +1,4 @@
-import { getSupabaseServerClient } from '@/shared/utils/supabase/server';
+import { getSupabaseServerClient } from '@/domains/shared/utils/supabase/server';
 import { createServerFn } from '@tanstack/start';
 
 export const signinFn = createServerFn()
