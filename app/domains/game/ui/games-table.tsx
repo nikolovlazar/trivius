@@ -39,10 +39,16 @@ export function GamesTable({ games, onManageSessions }: Props) {
       {
         accessorKey: 'game.id',
         header: 'ID',
+        meta: {
+          className: 'w-[46px]',
+        },
       },
       {
         accessorKey: 'game.title',
         header: 'Title',
+        meta: {
+          className: 'flex-1',
+        },
         cell: ({ row }) => (
           <Link
             to='/app/games/$gameId'
@@ -55,10 +61,16 @@ export function GamesTable({ games, onManageSessions }: Props) {
       {
         accessorFn: ({ sessions }) => sessions.length ?? 0,
         header: 'Sessions',
+        meta: {
+          className: 'w-[100px]',
+        },
       },
       {
         id: 'actions',
-        size: 40,
+        header: '',
+        meta: {
+          className: 'w-[60px]',
+        },
         cell: ({ row }) => (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -94,7 +106,7 @@ export function GamesTable({ games, onManageSessions }: Props) {
 
   return (
     <div className='rounded-md border'>
-      <Table>
+      <Table className='table-fixed w-full'>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
@@ -102,7 +114,8 @@ export function GamesTable({ games, onManageSessions }: Props) {
                 return (
                   <TableHead
                     key={header.id}
-                    style={{ width: `${header.getSize()}px` }}
+                    // @ts-ignore
+                    className={header.column.columnDef.meta?.className}
                   >
                     {header.isPlaceholder
                       ? null
