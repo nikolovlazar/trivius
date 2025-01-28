@@ -1,9 +1,20 @@
-import { Link, Outlet, createFileRoute } from '@tanstack/react-router';
+import {
+  Link,
+  Outlet,
+  createFileRoute,
+  redirect,
+} from '@tanstack/react-router';
 
 import { LogoutButton } from '@/shared/components/logout-button';
 
 export const Route = createFileRoute('/app')({
   component: RouteComponent,
+  beforeLoad: ({ context }) => {
+    if (!context.user) {
+      return redirect({ to: '/signin' });
+    }
+    return { user: context.user };
+  },
 });
 
 function RouteComponent() {
