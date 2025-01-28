@@ -8,34 +8,27 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
-
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as AuthImport } from './routes/_auth'
+import { Route as AppRouteImport } from './routes/app/route'
 import { Route as IndexImport } from './routes/index'
-import { Route as AppLayoutImport } from './routes/app/_layout'
-import { Route as authLayoutImport } from './routes/(auth)/_layout'
-import { Route as AppLayoutIndexImport } from './routes/app/_layout/index'
-import { Route as authLayoutSignupImport } from './routes/(auth)/_layout.signup'
-import { Route as authLayoutSigninImport } from './routes/(auth)/_layout.signin'
-import { Route as AppLayoutGamesGameIdIndexImport } from './routes/app/_layout/games/$gameId/index'
-
-// Create Virtual Routes
-
-const AppImport = createFileRoute('/app')()
-const authImport = createFileRoute('/(auth)')()
+import { Route as AppIndexImport } from './routes/app/index'
+import { Route as AuthSignupImport } from './routes/_auth.signup'
+import { Route as AuthSigninImport } from './routes/_auth.signin'
+import { Route as AppGamesGameIdIndexImport } from './routes/app/games/$gameId/index'
 
 // Create/Update Routes
 
-const AppRoute = AppImport.update({
-  id: '/app',
-  path: '/app',
+const AuthRoute = AuthImport.update({
+  id: '/_auth',
   getParentRoute: () => rootRoute,
 } as any)
 
-const authRoute = authImport.update({
-  id: '/(auth)',
+const AppRouteRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -45,38 +38,28 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AppLayoutRoute = AppLayoutImport.update({
-  id: '/_layout',
-  getParentRoute: () => AppRoute,
-} as any)
-
-const authLayoutRoute = authLayoutImport.update({
-  id: '/_layout',
-  getParentRoute: () => authRoute,
-} as any)
-
-const AppLayoutIndexRoute = AppLayoutIndexImport.update({
+const AppIndexRoute = AppIndexImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => AppLayoutRoute,
+  getParentRoute: () => AppRouteRoute,
 } as any)
 
-const authLayoutSignupRoute = authLayoutSignupImport.update({
+const AuthSignupRoute = AuthSignupImport.update({
   id: '/signup',
   path: '/signup',
-  getParentRoute: () => authLayoutRoute,
+  getParentRoute: () => AuthRoute,
 } as any)
 
-const authLayoutSigninRoute = authLayoutSigninImport.update({
+const AuthSigninRoute = AuthSigninImport.update({
   id: '/signin',
   path: '/signin',
-  getParentRoute: () => authLayoutRoute,
+  getParentRoute: () => AuthRoute,
 } as any)
 
-const AppLayoutGamesGameIdIndexRoute = AppLayoutGamesGameIdIndexImport.update({
+const AppGamesGameIdIndexRoute = AppGamesGameIdIndexImport.update({
   id: '/games/$gameId/',
   path: '/games/$gameId/',
-  getParentRoute: () => AppLayoutRoute,
+  getParentRoute: () => AppRouteRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -90,143 +73,107 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/(auth)': {
-      id: '/(auth)'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof authImport
-      parentRoute: typeof rootRoute
-    }
-    '/(auth)/_layout': {
-      id: '/(auth)/_layout'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof authLayoutImport
-      parentRoute: typeof authRoute
-    }
     '/app': {
       id: '/app'
       path: '/app'
       fullPath: '/app'
-      preLoaderRoute: typeof AppImport
+      preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRoute
     }
-    '/app/_layout': {
-      id: '/app/_layout'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof AppLayoutImport
-      parentRoute: typeof AppRoute
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthImport
+      parentRoute: typeof rootRoute
     }
-    '/(auth)/_layout/signin': {
-      id: '/(auth)/_layout/signin'
+    '/_auth/signin': {
+      id: '/_auth/signin'
       path: '/signin'
       fullPath: '/signin'
-      preLoaderRoute: typeof authLayoutSigninImport
-      parentRoute: typeof authLayoutImport
+      preLoaderRoute: typeof AuthSigninImport
+      parentRoute: typeof AuthImport
     }
-    '/(auth)/_layout/signup': {
-      id: '/(auth)/_layout/signup'
+    '/_auth/signup': {
+      id: '/_auth/signup'
       path: '/signup'
       fullPath: '/signup'
-      preLoaderRoute: typeof authLayoutSignupImport
-      parentRoute: typeof authLayoutImport
+      preLoaderRoute: typeof AuthSignupImport
+      parentRoute: typeof AuthImport
     }
-    '/app/_layout/': {
-      id: '/app/_layout/'
+    '/app/': {
+      id: '/app/'
       path: '/'
       fullPath: '/app/'
-      preLoaderRoute: typeof AppLayoutIndexImport
-      parentRoute: typeof AppLayoutImport
+      preLoaderRoute: typeof AppIndexImport
+      parentRoute: typeof AppRouteImport
     }
-    '/app/_layout/games/$gameId/': {
-      id: '/app/_layout/games/$gameId/'
+    '/app/games/$gameId/': {
+      id: '/app/games/$gameId/'
       path: '/games/$gameId'
       fullPath: '/app/games/$gameId'
-      preLoaderRoute: typeof AppLayoutGamesGameIdIndexImport
-      parentRoute: typeof AppLayoutImport
+      preLoaderRoute: typeof AppGamesGameIdIndexImport
+      parentRoute: typeof AppRouteImport
     }
   }
 }
 
 // Create and export the route tree
 
-interface authLayoutRouteChildren {
-  authLayoutSigninRoute: typeof authLayoutSigninRoute
-  authLayoutSignupRoute: typeof authLayoutSignupRoute
+interface AppRouteRouteChildren {
+  AppIndexRoute: typeof AppIndexRoute
+  AppGamesGameIdIndexRoute: typeof AppGamesGameIdIndexRoute
 }
 
-const authLayoutRouteChildren: authLayoutRouteChildren = {
-  authLayoutSigninRoute: authLayoutSigninRoute,
-  authLayoutSignupRoute: authLayoutSignupRoute,
+const AppRouteRouteChildren: AppRouteRouteChildren = {
+  AppIndexRoute: AppIndexRoute,
+  AppGamesGameIdIndexRoute: AppGamesGameIdIndexRoute,
 }
 
-const authLayoutRouteWithChildren = authLayoutRoute._addFileChildren(
-  authLayoutRouteChildren,
+const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
+  AppRouteRouteChildren,
 )
 
-interface authRouteChildren {
-  authLayoutRoute: typeof authLayoutRouteWithChildren
+interface AuthRouteChildren {
+  AuthSigninRoute: typeof AuthSigninRoute
+  AuthSignupRoute: typeof AuthSignupRoute
 }
 
-const authRouteChildren: authRouteChildren = {
-  authLayoutRoute: authLayoutRouteWithChildren,
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthSigninRoute: AuthSigninRoute,
+  AuthSignupRoute: AuthSignupRoute,
 }
 
-const authRouteWithChildren = authRoute._addFileChildren(authRouteChildren)
-
-interface AppLayoutRouteChildren {
-  AppLayoutIndexRoute: typeof AppLayoutIndexRoute
-  AppLayoutGamesGameIdIndexRoute: typeof AppLayoutGamesGameIdIndexRoute
-}
-
-const AppLayoutRouteChildren: AppLayoutRouteChildren = {
-  AppLayoutIndexRoute: AppLayoutIndexRoute,
-  AppLayoutGamesGameIdIndexRoute: AppLayoutGamesGameIdIndexRoute,
-}
-
-const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(
-  AppLayoutRouteChildren,
-)
-
-interface AppRouteChildren {
-  AppLayoutRoute: typeof AppLayoutRouteWithChildren
-}
-
-const AppRouteChildren: AppRouteChildren = {
-  AppLayoutRoute: AppLayoutRouteWithChildren,
-}
-
-const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 export interface FileRoutesByFullPath {
-  '/': typeof authLayoutRouteWithChildren
-  '/app': typeof AppLayoutRouteWithChildren
-  '/signin': typeof authLayoutSigninRoute
-  '/signup': typeof authLayoutSignupRoute
-  '/app/': typeof AppLayoutIndexRoute
-  '/app/games/$gameId': typeof AppLayoutGamesGameIdIndexRoute
+  '/': typeof IndexRoute
+  '/app': typeof AppRouteRouteWithChildren
+  '': typeof AuthRouteWithChildren
+  '/signin': typeof AuthSigninRoute
+  '/signup': typeof AuthSignupRoute
+  '/app/': typeof AppIndexRoute
+  '/app/games/$gameId': typeof AppGamesGameIdIndexRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof authLayoutRouteWithChildren
-  '/app': typeof AppLayoutIndexRoute
-  '/signin': typeof authLayoutSigninRoute
-  '/signup': typeof authLayoutSignupRoute
-  '/app/games/$gameId': typeof AppLayoutGamesGameIdIndexRoute
+  '/': typeof IndexRoute
+  '': typeof AuthRouteWithChildren
+  '/signin': typeof AuthSigninRoute
+  '/signup': typeof AuthSignupRoute
+  '/app': typeof AppIndexRoute
+  '/app/games/$gameId': typeof AppGamesGameIdIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/(auth)': typeof authRouteWithChildren
-  '/(auth)/_layout': typeof authLayoutRouteWithChildren
-  '/app': typeof AppRouteWithChildren
-  '/app/_layout': typeof AppLayoutRouteWithChildren
-  '/(auth)/_layout/signin': typeof authLayoutSigninRoute
-  '/(auth)/_layout/signup': typeof authLayoutSignupRoute
-  '/app/_layout/': typeof AppLayoutIndexRoute
-  '/app/_layout/games/$gameId/': typeof AppLayoutGamesGameIdIndexRoute
+  '/app': typeof AppRouteRouteWithChildren
+  '/_auth': typeof AuthRouteWithChildren
+  '/_auth/signin': typeof AuthSigninRoute
+  '/_auth/signup': typeof AuthSignupRoute
+  '/app/': typeof AppIndexRoute
+  '/app/games/$gameId/': typeof AppGamesGameIdIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -234,36 +181,35 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/app'
+    | ''
     | '/signin'
     | '/signup'
     | '/app/'
     | '/app/games/$gameId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app' | '/signin' | '/signup' | '/app/games/$gameId'
+  to: '/' | '' | '/signin' | '/signup' | '/app' | '/app/games/$gameId'
   id:
     | '__root__'
     | '/'
-    | '/(auth)'
-    | '/(auth)/_layout'
     | '/app'
-    | '/app/_layout'
-    | '/(auth)/_layout/signin'
-    | '/(auth)/_layout/signup'
-    | '/app/_layout/'
-    | '/app/_layout/games/$gameId/'
+    | '/_auth'
+    | '/_auth/signin'
+    | '/_auth/signup'
+    | '/app/'
+    | '/app/games/$gameId/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  authRoute: typeof authRouteWithChildren
-  AppRoute: typeof AppRouteWithChildren
+  AppRouteRoute: typeof AppRouteRouteWithChildren
+  AuthRoute: typeof AuthRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  authRoute: authRouteWithChildren,
-  AppRoute: AppRouteWithChildren,
+  AppRouteRoute: AppRouteRouteWithChildren,
+  AuthRoute: AuthRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -277,56 +223,42 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/(auth)",
-        "/app"
+        "/app",
+        "/_auth"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/(auth)": {
-      "filePath": "(auth)",
-      "children": [
-        "/(auth)/_layout"
-      ]
-    },
-    "/(auth)/_layout": {
-      "filePath": "(auth)/_layout.tsx",
-      "parent": "/(auth)",
-      "children": [
-        "/(auth)/_layout/signin",
-        "/(auth)/_layout/signup"
-      ]
-    },
     "/app": {
-      "filePath": "app",
+      "filePath": "app/route.tsx",
       "children": [
-        "/app/_layout"
+        "/app/",
+        "/app/games/$gameId/"
       ]
     },
-    "/app/_layout": {
-      "filePath": "app/_layout.tsx",
-      "parent": "/app",
+    "/_auth": {
+      "filePath": "_auth.tsx",
       "children": [
-        "/app/_layout/",
-        "/app/_layout/games/$gameId/"
+        "/_auth/signin",
+        "/_auth/signup"
       ]
     },
-    "/(auth)/_layout/signin": {
-      "filePath": "(auth)/_layout.signin.tsx",
-      "parent": "/(auth)/_layout"
+    "/_auth/signin": {
+      "filePath": "_auth.signin.tsx",
+      "parent": "/_auth"
     },
-    "/(auth)/_layout/signup": {
-      "filePath": "(auth)/_layout.signup.tsx",
-      "parent": "/(auth)/_layout"
+    "/_auth/signup": {
+      "filePath": "_auth.signup.tsx",
+      "parent": "/_auth"
     },
-    "/app/_layout/": {
-      "filePath": "app/_layout/index.tsx",
-      "parent": "/app/_layout"
+    "/app/": {
+      "filePath": "app/index.tsx",
+      "parent": "/app"
     },
-    "/app/_layout/games/$gameId/": {
-      "filePath": "app/_layout/games/$gameId/index.tsx",
-      "parent": "/app/_layout"
+    "/app/games/$gameId/": {
+      "filePath": "app/games/$gameId/index.tsx",
+      "parent": "/app"
     }
   }
 }

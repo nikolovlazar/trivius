@@ -1,0 +1,22 @@
+import { getSupabaseServerClient } from '@/shared/utils/supabase/server';
+import { createServerFn } from '@tanstack/start';
+
+export const signupFn = createServerFn()
+  .validator((d: any) => d as { email: string; password: string })
+  .handler(async ({ data }) => {
+    const { email, password } = data;
+
+    const supabase = getSupabaseServerClient();
+
+    const { error: signUpError } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (signUpError) {
+      return {
+        error: signUpError,
+        message: 'An error happened while signing up...',
+      };
+    }
+  });
