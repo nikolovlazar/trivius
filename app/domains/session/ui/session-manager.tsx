@@ -87,9 +87,9 @@ export function SessionManager({
               {sessions.map((session) => (
                 <div
                   key={session.id}
-                  className='flex items-center justify-between p-2 bg-gray-100 rounded'
+                  className='flex items-center gap-2 justify-between p-2 dark:bg-gray-900 bg-gray-100 rounded'
                 >
-                  <div>
+                  <div className='flex-1'>
                     <p className='font-medium'>Session {session.id}</p>
                     <p className='text-sm text-gray-500'>
                       {new Date(session.start_time).toLocaleString()}
