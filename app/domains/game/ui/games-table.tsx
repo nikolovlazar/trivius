@@ -60,9 +60,9 @@ export function GamesTable({ games, onManageSessions }: Props) {
       },
       {
         accessorFn: ({ sessions }) => sessions.length ?? 0,
-        header: 'Sessions',
+        header: 'Sesh',
         meta: {
-          className: 'w-[100px]',
+          className: 'w-[40px]',
         },
       },
       {
