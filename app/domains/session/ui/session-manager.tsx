@@ -74,7 +74,7 @@ export function SessionManager({
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className='w-full sm:max-w-xl'>
           <DialogHeader>
-            <DialogTitle>Manage Sessions for {gameName}</DialogTitle>
+            <DialogTitle>Manage Sessions for "{gameName}"</DialogTitle>
             <DialogDescription>
               Start a new session or manage existing ones.
             </DialogDescription>

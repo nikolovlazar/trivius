@@ -42,7 +42,7 @@ function RouteComponent() {
   return (
     <>
       <div className='flex justify-between items-center mb-6'>
-        <h2 className='text-xl font-semibold'>Your Trivia Games</h2>
+        <h2 className='text-xl font-semibold'>Games</h2>
         <Button onClick={() => setIsNewGameModalOpen(true)}>
           Create New Trivia Game
         </Button>
