@@ -48,7 +48,7 @@ function RouteComponent() {
         </Button>
       </div>
 
-      <GamesTable games={games} onManageSessions={handleManageSessions} />
+      <GamesTable games={games} />
 
       {selectedGame && (
         <SessionManager
