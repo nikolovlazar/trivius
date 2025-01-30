@@ -1,5 +1,5 @@
 import { toast } from 'sonner';
-import { useState } from 'react';
+import { FormEventHandler, useState } from 'react';
 import { useRouteContext, useRouter } from '@tanstack/react-router';
 
 import {
@@ -11,8 +11,11 @@ import {
 } from '@/domains/shared/components/ui/dialog';
 import { Input } from '@/domains/shared/components/ui/input';
 import { Button } from '@/domains/shared/components/ui/button';
+import { useMutation } from '@/domains/shared/hooks/use-mutation';
 
 import { createGame } from '@/domains/game/functions/create-game.function';
+import { GameInsert } from '@/domains/game/entities/game';
+import { FormSubmitButton } from '@/domains/shared/components/form-submit-button';
 
 export function NewGameModal({
   isOpen,
@@ -23,27 +26,30 @@ export function NewGameModal({
 }) {
   const router = useRouter();
   const { user } = useRouteContext({ from: '/app' });
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = async () => {
-    if (!title) {
-      setError('Title is required');
-      return;
-    }
-    try {
-      const newGame = await createGame({
-        data: { title, description, userId: user!.id },
-      });
-      if (newGame) {
-        router.invalidate();
-        toast.success('Game created!');
-        onClose();
-      }
-    } catch (error) {
+  const newGameMutation = useMutation({
+    fn: createGame,
+    onSuccess: () => {
+      router.invalidate();
+      toast.success('Game created!');
+      onClose();
+    },
+    onFailure: ({ error }) => {
+      setError(error.message);
       toast.error('Failed to create game');
-    }
+    },
+  });
+
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+    if (!user) return;
+
+    const newGame: GameInsert = {
+      title: e.currentTarget.elements['title'].value,
+      description: e.currentTarget.elements['description'].value,
+    };
+
+    newGameMutation.mutate({ data: { ...newGame, userId: user.id } });
   };
 
   return (
@@ -55,22 +61,14 @@ export function NewGameModal({
             Create a new game to start playing trivia.
           </DialogDescription>
         </DialogHeader>
-        <div className='space-y-4'>
-          <Input
-            placeholder='Title'
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <Input
-            placeholder='Description'
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
-        {error && <p className='text-red-500'>{error}</p>}
-        <div className='flex justify-end'>
-          <Button onClick={handleSubmit}>Create</Button>
-        </div>
+        <form className='space-y-4' onSubmit={handleSubmit}>
+          <Input placeholder='Title' name='title' required />
+          <Input placeholder='Description' name='description' />
+          {error && <p className='text-red-500'>{error}</p>}
+          <div className='flex justify-end'>
+            <FormSubmitButton>Create</FormSubmitButton>
+          </div>
+        </form>
       </DialogContent>
     </Dialog>
   );
