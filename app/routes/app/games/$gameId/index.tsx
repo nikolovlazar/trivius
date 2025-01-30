@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 
 import { getGame } from '@/domains/game/functions/get-game.function';
+import { GameDetailsForm } from '@/domains/game/ui/game-details-form';
 
 export const Route = createFileRoute('/app/games/$gameId/')({
   component: RouteComponent,
@@ -11,6 +12,11 @@ export const Route = createFileRoute('/app/games/$gameId/')({
 });
 
 function RouteComponent() {
-  const { game } = Route.useLoaderData();
-  return <div>{game.title}</div>;
+  const { game, sessions } = Route.useLoaderData();
+
+  return (
+    <div className='flex flex-col'>
+      <GameDetailsForm game={game} />
+    </div>
+  );
 }
