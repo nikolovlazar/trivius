@@ -73,9 +73,9 @@ export function GamesTable({ games }: Props) {
       },
       {
         accessorFn: ({ sessions }) => sessions.length ?? 0,
-        header: 'Sesh',
+        header: 'Sessions',
         meta: {
-          className: 'w-[40px]',
+          className: 'w-[88px]',
         },
       },
       {
