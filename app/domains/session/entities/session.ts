@@ -7,11 +7,12 @@ export type Session = {
   id: number;
   open: boolean;
   start_time: string;
+  label: string;
 };
 
 export type SessionInsert = MakeOptional<
   Session,
-  'current_question' | 'end_time' | 'id' | 'open'
+  'current_question' | 'end_time' | 'id' | 'open' | 'label'
 >;
 
 export type SessionUpdate = Partial<Session>;

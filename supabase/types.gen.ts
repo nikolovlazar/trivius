@@ -208,6 +208,7 @@ export type Database = {
           end_time: string | null
           game_id: number
           id: number
+          label: string
           open: boolean
           start_time: string
         }
@@ -216,6 +217,7 @@ export type Database = {
           end_time?: string | null
           game_id: number
           id?: number
+          label?: string
           open?: boolean
           start_time: string
         }
@@ -224,6 +226,7 @@ export type Database = {
           end_time?: string | null
           game_id?: number
           id?: number
+          label?: string
           open?: boolean
           start_time?: string
         }
