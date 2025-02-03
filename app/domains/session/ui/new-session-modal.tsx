@@ -1,7 +1,11 @@
-import { toast } from 'sonner';
 import { useRouter } from '@tanstack/react-router';
 import { FormEventHandler, useState } from 'react';
+import { toast } from 'sonner';
 
+import { SessionInsert } from '@/domains/session/entities/session';
+import { createSession } from '@/domains/session/functions/create-session.function';
+
+import { FormSubmitButton } from '@/domains/shared/components/form-submit-button';
 import {
   Dialog,
   DialogContent,
@@ -9,14 +13,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/domains/shared/components/ui/dialog';
+import { Input } from '@/domains/shared/components/ui/input';
 import { Label } from '@/domains/shared/components/ui/label';
 import { Switch } from '@/domains/shared/components/ui/switch';
-import { Input } from '@/domains/shared/components/ui/input';
-import { FormSubmitButton } from '@/domains/shared/components/form-submit-button';
 import { useMutation } from '@/domains/shared/hooks/use-mutation';
-
-import { createSession } from '@/domains/session/functions/create-session.function';
-import { SessionInsert } from '@/domains/session/entities/session';
 
 type Props = {
   isOpen: boolean;

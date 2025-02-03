@@ -1,40 +1,42 @@
+import { useRouter } from '@tanstack/react-router';
 import {
+  type ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
-  type ColumnDef,
 } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { Pencil, Trash2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
-import { useRouter } from '@tanstack/react-router';
 
-import { Game } from '@/domains/game/entities/game';
 import { Session } from '@/domains/session/entities/session';
 import { deleteSession } from '@/domains/session/functions/delete-session.function';
 import { updateSession } from '@/domains/session/functions/update-session.function';
 import { NewSessionModal } from '@/domains/session/ui/new-session-modal';
-import { UpdateSessionModal } from '@/domains/session/ui/update-session-modal';
 import { SessionOpenSwitch } from '@/domains/session/ui/session-open-switch';
+import { UpdateSessionModal } from '@/domains/session/ui/update-session-modal';
+
+import { Game } from '@/domains/game/entities/game';
+
+import { ConfirmDeletion } from '@/domains/shared/components/confirm-deletion';
+import { Button } from '@/domains/shared/components/ui/button';
+import { Input } from '@/domains/shared/components/ui/input';
 import {
   Table,
-  TableHeader,
-  TableRow,
-  TableHead,
   TableBody,
   TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from '@/domains/shared/components/ui/table';
-import { Button } from '@/domains/shared/components/ui/button';
-import { ConfirmDeletion } from '@/domains/shared/components/confirm-deletion';
-import { useMutation } from '@/domains/shared/hooks/use-mutation';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/domains/shared/components/ui/tooltip';
-import { Input } from '@/domains/shared/components/ui/input';
+import { useMutation } from '@/domains/shared/hooks/use-mutation';
 
 type Props = {
   sessions: Session[];

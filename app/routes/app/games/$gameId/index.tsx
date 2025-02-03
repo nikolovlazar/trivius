@@ -1,8 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router';
 
+import { SessionsTable } from '@/domains/session/ui/sessions-table';
+
 import { getGame } from '@/domains/game/functions/get-game.function';
 import { GameDetailsForm } from '@/domains/game/ui/game-details-form';
-import { SessionsTable } from '@/domains/session/ui/sessions-table';
 
 export const Route = createFileRoute('/app/games/$gameId/')({
   component: RouteComponent,

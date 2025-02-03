@@ -1,7 +1,12 @@
-import { toast } from 'sonner';
-import { FormEventHandler, useState } from 'react';
 import { useRouteContext, useRouter } from '@tanstack/react-router';
+import { FormEventHandler, useState } from 'react';
+import { toast } from 'sonner';
 
+import { GameInsert } from '@/domains/game/entities/game';
+import { createGame } from '@/domains/game/functions/create-game.function';
+
+import { FormSubmitButton } from '@/domains/shared/components/form-submit-button';
+import { Button } from '@/domains/shared/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -10,12 +15,7 @@ import {
   DialogTitle,
 } from '@/domains/shared/components/ui/dialog';
 import { Input } from '@/domains/shared/components/ui/input';
-import { Button } from '@/domains/shared/components/ui/button';
 import { useMutation } from '@/domains/shared/hooks/use-mutation';
-
-import { createGame } from '@/domains/game/functions/create-game.function';
-import { GameInsert } from '@/domains/game/entities/game';
-import { FormSubmitButton } from '@/domains/shared/components/form-submit-button';
 
 export function NewGameModal({
   isOpen,

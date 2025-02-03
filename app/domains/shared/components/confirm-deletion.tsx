@@ -1,11 +1,11 @@
+import { Button } from '@/domains/shared/components/ui/button';
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from '@/domains/shared/components/ui/dialog';
-import { Button } from '@/domains/shared/components/ui/button';
 
 interface ConfirmDeletionProps {
   isOpen: boolean;

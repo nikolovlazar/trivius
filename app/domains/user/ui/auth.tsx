@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router';
 
+import { Button } from '@/domains/shared/components/ui/button';
 import {
   Card,
   CardContent,
@@ -8,7 +9,6 @@ import {
 } from '@/domains/shared/components/ui/card';
 import { Input } from '@/domains/shared/components/ui/input';
 import { Label } from '@/domains/shared/components/ui/label';
-import { Button } from '@/domains/shared/components/ui/button';
 
 export function Auth({
   actionText,

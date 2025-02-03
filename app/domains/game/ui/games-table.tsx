@@ -1,28 +1,30 @@
+import { Link } from '@tanstack/react-router';
+import { useRouter } from '@tanstack/react-router';
 import {
+  type ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
-  type ColumnDef,
 } from '@tanstack/react-table';
 import { Trash2 } from 'lucide-react';
-import { Link } from '@tanstack/react-router';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
-import { useRouter } from '@tanstack/react-router';
+
+import { Session } from '@/domains/session/entities/session';
 
 import { Game } from '@/domains/game/entities/game';
-import { Session } from '@/domains/session/entities/session';
+import { deleteGame } from '@/domains/game/functions/delete-game.function';
+
+import { ConfirmDeletion } from '@/domains/shared/components/confirm-deletion';
+import { Button } from '@/domains/shared/components/ui/button';
 import {
   Table,
-  TableHeader,
-  TableRow,
-  TableHead,
   TableBody,
   TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from '@/domains/shared/components/ui/table';
-import { Button } from '@/domains/shared/components/ui/button';
-import { ConfirmDeletion } from '@/domains/shared/components/confirm-deletion';
-import { deleteGame } from '@/domains/game/functions/delete-game.function';
 import { useMutation } from '@/domains/shared/hooks/use-mutation';
 
 type Props = {

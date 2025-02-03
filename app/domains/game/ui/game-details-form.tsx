@@ -1,15 +1,15 @@
-import { toast } from 'sonner';
 import { useRouter } from '@tanstack/react-router';
 import { FormEventHandler, useCallback, useState } from 'react';
+import { toast } from 'sonner';
 
+import { type Game, GameUpdate } from '@/domains/game/entities/game';
 import { deleteGame } from '@/domains/game/functions/delete-game.function';
 
+import { ConfirmDeletion } from '@/domains/shared/components/confirm-deletion';
+import { Button } from '@/domains/shared/components/ui/button';
 import { Input } from '@/domains/shared/components/ui/input';
 import { Textarea } from '@/domains/shared/components/ui/textarea';
-import { GameUpdate, type Game } from '@/domains/game/entities/game';
-import { Button } from '@/domains/shared/components/ui/button';
 import { useMutation } from '@/domains/shared/hooks/use-mutation';
-import { ConfirmDeletion } from '@/domains/shared/components/confirm-deletion';
 
 type Props = {
   game: Game;

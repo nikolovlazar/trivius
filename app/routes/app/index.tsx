@@ -1,11 +1,11 @@
-import { useState } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
+import { useState } from 'react';
 
-import { Button } from '@/domains/shared/components/ui/button';
-
+import { getGames } from '@/domains/game/functions/get-games.function';
 import { GamesTable } from '@/domains/game/ui/games-table';
 import { NewGameModal } from '@/domains/game/ui/new-game-modal';
-import { getGames } from '@/domains/game/functions/get-games.function';
+
+import { Button } from '@/domains/shared/components/ui/button';
 
 export const Route = createFileRoute('/app/')({
   component: RouteComponent,

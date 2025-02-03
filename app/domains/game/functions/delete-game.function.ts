@@ -1,9 +1,9 @@
 import { createServerFn } from '@tanstack/start';
 import { z } from 'vinxi';
 
-import { getSupabaseServerClient } from '@/domains/shared/utils/supabase/server';
-
 import { fetchUser } from '@/domains/user/functions/fetch-user.function';
+
+import { getSupabaseServerClient } from '@/domains/shared/utils/supabase/server';
 
 export const deleteGame = createServerFn()
   .validator(z.number())

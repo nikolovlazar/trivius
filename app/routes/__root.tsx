@@ -1,18 +1,20 @@
+import { AUTH_COOKIE_NAME } from '@/config';
 import {
+  CatchBoundary,
   Outlet,
+  ScriptOnce,
   ScrollRestoration,
   createRootRoute,
-  ScriptOnce,
-  CatchBoundary,
 } from '@tanstack/react-router';
 import { Meta, Scripts } from '@tanstack/start';
-import { lazy, type ReactNode } from 'react';
+import { type ReactNode, lazy } from 'react';
+
+import { fetchUser } from '@/domains/user/functions/fetch-user.function';
+
+import { NotFound } from '@/domains/shared/components/not-found';
+import { Toaster } from '@/domains/shared/components/ui/sonner';
 
 import globalCss from '../global.css?url';
-import { fetchUser } from '@/domains/user/functions/fetch-user.function';
-import { Toaster } from '@/domains/shared/components/ui/sonner';
-import { NotFound } from '@/domains/shared/components/not-found';
-import { AUTH_COOKIE_NAME } from '@/config';
 
 const TanStackRouterDevtools =
   process.env.NODE_ENV === 'production'

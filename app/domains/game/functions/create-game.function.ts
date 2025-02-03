@@ -1,5 +1,5 @@
-import { z } from 'vinxi';
 import { createServerFn } from '@tanstack/start';
+import { z } from 'vinxi';
 
 import { Game } from '@/domains/game/entities/game';
 

@@ -1,7 +1,8 @@
 import { createServerFn } from '@tanstack/start';
 
-import { Game } from '@/domains/game/entities/game';
 import { Session } from '@/domains/session/entities/session';
+
+import { Game } from '@/domains/game/entities/game';
 
 import { getSupabaseServerClient } from '@/domains/shared/utils/supabase/server';
 

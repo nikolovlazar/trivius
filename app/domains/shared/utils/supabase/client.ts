@@ -1,6 +1,5 @@
-import { createBrowserClient } from '@supabase/ssr';
-
 import { AUTH_COOKIE_NAME } from '@/config';
+import { createBrowserClient } from '@supabase/ssr';
 
 export function createClient() {
   return createBrowserClient(

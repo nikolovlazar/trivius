@@ -1,9 +1,11 @@
+import { useRouter } from '@tanstack/react-router';
 import { LogOut } from 'lucide-react';
 
-import { Button } from '@/domains/shared/components/ui/button';
 import { signoutFn } from '@/domains/user/functions/sign-out.function';
+
+import { Button } from '@/domains/shared/components/ui/button';
+
 import { useMutation } from '../hooks/use-mutation';
-import { useRouter } from '@tanstack/react-router';
 
 export function LogoutButton() {
   const router = useRouter();

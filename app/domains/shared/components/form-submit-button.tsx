@@ -1,3 +1,4 @@
+import { Loader2 } from 'lucide-react';
 import { useFormStatus } from 'react-dom';
 
 import {
@@ -5,7 +6,6 @@ import {
   type ButtonProps,
 } from '@/domains/shared/components/ui/button';
 import { cn } from '@/domains/shared/utils/tw-utils';
-import { Loader2 } from 'lucide-react';
 
 export function FormSubmitButton(props: ButtonProps) {
   const { children, ...rest } = props;

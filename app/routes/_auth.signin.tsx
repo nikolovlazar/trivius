@@ -1,9 +1,9 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router';
 
-import { useMutation } from '@/domains/shared/hooks/use-mutation';
-
 import { signinFn } from '@/domains/user/functions/sign-in.function';
 import { Auth } from '@/domains/user/ui/auth';
+
+import { useMutation } from '@/domains/shared/hooks/use-mutation';
 
 export const Route = createFileRoute('/_auth/signin')({
   component: SigninPage,
