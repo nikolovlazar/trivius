@@ -121,7 +121,7 @@ export function SessionsTable({ sessions, game, userId }: Props) {
         header: 'Start',
         cell: ({ row }) =>
           row.original.start_time
-            ? format(row.original.start_time, 'PPP - pp')
+            ? format(row.original.start_time, 'PP, p')
             : 'Not set',
       },
       {
@@ -129,7 +129,7 @@ export function SessionsTable({ sessions, game, userId }: Props) {
         header: 'End',
         cell: ({ row }) =>
           row.original.end_time
-            ? format(row.original.end_time, 'PPP - pp')
+            ? format(row.original.end_time, 'PP, p')
             : 'Not set',
       },
       {
