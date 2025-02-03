@@ -1,45 +1,32 @@
 import { createServerFn } from '@tanstack/start';
+import { z } from 'vinxi';
 
 import { Session } from '@/domains/session/entities/session';
 
 import { Game } from '@/domains/game/entities/game';
 
-import { getSupabaseServerClient } from '@/domains/shared/utils/supabase/server';
+import { fetchUser } from '@/domains/user/functions/fetch-user.function';
+
+import { gameRepository, sessionRepository } from '@/container';
 
 export const getGame = createServerFn()
-  .validator(({ gameId, userId }: { gameId: number; userId: string }) => ({
-    gameId,
-    userId,
-  }))
-  .handler(async ({ data: { gameId, userId } }) => {
-    const supabase = getSupabaseServerClient();
-
-    const { data: gameGm, error: gameGmError } = await supabase
-      .from('games_gms')
-      .select('*')
-      .eq('gm_id', userId)
-      .eq('game_id', gameId)
-      .single();
-
-    if (gameGmError) {
-      throw new Error('Failed to fetch game');
+  .validator(z.number())
+  .handler(async ({ data }) => {
+    const game = await gameRepository.get(data);
+    if (!game) {
+      throw new Error('Game not found');
     }
 
-    const gamePromise = supabase
-      .from('games')
-      .select('*')
-      .eq('id', gameGm.game_id)
-      .single();
+    const result: { game: Game; sessions: Session[] } = { game, sessions: [] };
 
-    const sessionsPromise = supabase
-      .from('sessions')
-      .select('*')
-      .eq('game_id', gameGm.game_id);
+    const { user } = await fetchUser();
 
-    const [{ data: game }, { data: sessions }] = await Promise.all([
-      gamePromise,
-      sessionsPromise,
-    ]);
+    if (user) {
+      try {
+        const sessions = await sessionRepository.getForGame(game.id);
+        result.sessions = sessions;
+      } catch (e) {}
+    }
 
-    return { game: game as Game, sessions: (sessions as Session[]) ?? [] };
+    return result;
   });

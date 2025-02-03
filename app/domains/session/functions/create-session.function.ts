@@ -3,7 +3,7 @@ import { z } from 'vinxi';
 
 import { fetchUser } from '@/domains/user/functions/fetch-user.function';
 
-import { getSupabaseServerClient } from '@/domains/shared/utils/supabase/server';
+import { gameRepository, sessionRepository } from '@/container';
 
 export const createSession = createServerFn()
   .validator(
@@ -15,45 +15,25 @@ export const createSession = createServerFn()
     })
   )
   .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient();
-
     const { user } = await fetchUser();
 
     if (!user) {
       throw new Error('Must be logged in to create sessions.');
     }
 
-    const { data: game, error: gameError } = await supabase
-      .from('games')
-      .select('id')
-      .eq('id', data.game_id)
-      .single();
+    const gameBelongsToUser = await gameRepository.belongsTo(
+      data.game_id,
+      user.id
+    );
 
-    const { data: gameGms, error: gameGmsError } = await supabase
-      .from('games_gms')
-      .select('*')
-      .eq('game_id', data.game_id)
-      .eq('gm_id', user.id)
-      .single();
-
-    if (!game || !gameGms || gameError || gameGmsError) {
-      throw new Error('Game does not exist, or is not assigned to user');
+    if (!gameBelongsToUser) {
+      throw new Error('Game does not belong to user');
     }
 
-    const { data: session, error } = await supabase
-      .from('sessions')
-      .insert({
-        game_id: data.game_id,
-        start_time: data.start_time,
-        open: data.open,
-        label: data.label,
-      })
-      .select()
-      .single();
-
-    if (error) {
+    try {
+      const session = await sessionRepository.create(data);
+      return session;
+    } catch (error) {
       throw new Error('Failed to create session');
     }
-
-    return session;
   });

@@ -1,45 +1,43 @@
 import { createServerFn } from '@tanstack/start';
 import { z } from 'vinxi';
 
+import { Game } from '@/domains/game/entities/game';
+
 import { fetchUser } from '@/domains/user/functions/fetch-user.function';
 
-import { getSupabaseServerClient } from '@/domains/shared/utils/supabase/server';
+import { gameRepository } from '@/container';
 
 export const deleteGame = createServerFn()
   .validator(z.number())
   .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient();
-
     const { user } = await fetchUser();
 
     if (!user) {
       throw new Error('User not found');
     }
 
-    const { error: gameGmSelectError } = await supabase
-      .from('games_gms')
-      .select('*')
-      .eq('game_id', data)
-      .eq('gm_id', user.id)
-      .single();
+    let game: Game;
 
-    if (gameGmSelectError) {
+    try {
+      const usersGames = await gameRepository.getUsersGamesWithSessions(
+        user.id
+      );
+      const target = usersGames.filter((ug) => ug.game.id === data);
+      if (!target || target.length === 0) {
+        throw new Error('Game does not belong to user');
+      }
+      game = target[0].game;
+    } catch (e) {
       throw new Error('Game does not belong to user');
     }
 
-    const gameExists = supabase.from('games').delete().eq('id', data);
-
-    const gameGmExists = supabase
-      .from('games_gms')
-      .delete()
-      .eq('game_id', data)
-      .eq('gm_id', user.id);
-
-    const [{ error: gameError }, { error: gameGmDeleteError }] =
-      await Promise.all([gameExists, gameGmExists]);
-
-    if (gameError || gameGmDeleteError) {
-      console.error(gameError, gameGmDeleteError);
-      throw new Error('Failed to delete game');
+    try {
+      const deleted = await gameRepository.delete({
+        gameId: game.id,
+        userId: user.id,
+      });
+      return deleted;
+    } catch (e) {
+      throw new Error('Cannot delete game. Try again later.');
     }
   });

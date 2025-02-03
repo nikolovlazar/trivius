@@ -9,7 +9,7 @@ import { Button } from '@/domains/shared/components/ui/button';
 
 export const Route = createFileRoute('/app/')({
   component: RouteComponent,
-  loader: async ({ context }) => await getGames({ data: context.user!.id }),
+  loader: async () => await getGames(),
 });
 
 function RouteComponent() {

@@ -7,9 +7,9 @@ import { GameDetailsForm } from '@/domains/game/ui/game-details-form';
 
 export const Route = createFileRoute('/app/games/$gameId/')({
   component: RouteComponent,
-  loader: async ({ context, params }) =>
+  loader: async ({ params }) =>
     await getGame({
-      data: { userId: context.user!.id, gameId: parseInt(params.gameId) },
+      data: parseInt(params.gameId),
     }),
   beforeLoad: ({ context }) => {
     return { user: context.user };

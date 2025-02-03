@@ -1,9 +1,11 @@
 import { createServerFn } from '@tanstack/start';
 import { z } from 'vinxi';
 
+import { Session } from '@/domains/session/entities/session';
+
 import { fetchUser } from '@/domains/user/functions/fetch-user.function';
 
-import { getSupabaseServerClient } from '@/domains/shared/utils/supabase/server';
+import { gameRepository, sessionRepository } from '@/container';
 
 export const updateSession = createServerFn()
   .validator(
@@ -16,73 +18,32 @@ export const updateSession = createServerFn()
     })
   )
   .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient();
-
     const { user } = await fetchUser();
 
     if (!user) {
-      throw new Error('Must be logged in to update session.');
+      throw new Error('Must be logged in to update sessions.');
     }
 
-    const { data: session, error: sessionError } = await supabase
-      .from('sessions')
-      .select('*')
-      .eq('id', data.id)
-      .single();
-
-    if (!session || sessionError) {
-      throw new Error('Session not found.');
+    let session: Session;
+    try {
+      session = await sessionRepository.get(data.id);
+    } catch (error) {
+      throw new Error('Session does not exist');
     }
 
-    const { data: game, error: gameError } = await supabase
-      .from('games')
-      .select('id')
-      .eq('id', session.game_id)
-      .single();
+    const gameBelongsToUser = await gameRepository.belongsTo(
+      session.game_id,
+      user.id
+    );
 
-    const { data: gameGms, error: gameGmsError } = await supabase
-      .from('games_gms')
-      .select('*')
-      .eq('game_id', session.game_id)
-      .eq('gm_id', user.id)
-      .single();
-
-    if (!game || !gameGms || gameError || gameGmsError) {
-      throw new Error('Game does not exist, or is not assigned to user');
+    if (!gameBelongsToUser) {
+      throw new Error('Game does not belong to user');
     }
 
-    const updatingData = { ...session };
-
-    if (data.open) {
-      updatingData.open = data.open;
-    }
-
-    if (data.start_time && data.start_time.length > 0) {
-      updatingData.start_time = data.start_time;
-    }
-
-    if (data.end_time && data.end_time.length > 0) {
-      updatingData.end_time = data.end_time;
-    }
-
-    if (data.label) {
-      updatingData.label = data.label;
-    }
-
-    const { error } = await supabase
-      .from('sessions')
-      .update({
-        open: updatingData.open,
-        start_time: updatingData.start_time,
-        end_time: updatingData.end_time,
-        label: updatingData.label,
-      })
-      .eq('id', session.id);
-
-    if (error) {
-      console.error(error.message);
+    try {
+      const updated = await sessionRepository.update(data);
+      return updated;
+    } catch (error) {
       throw new Error('Failed to update session');
     }
-
-    return session;
   });

@@ -14,6 +14,7 @@
     "^@/domains/game/(.*)$",
     "^@/domains/user/(.*)$",
     "^@/domains/shared/(.*)$",
+    "^@/container$",
     "^[./]"
   ],
   "importOrderSeparation": true,

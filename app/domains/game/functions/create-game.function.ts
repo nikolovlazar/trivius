@@ -1,40 +1,32 @@
 import { createServerFn } from '@tanstack/start';
 import { z } from 'vinxi';
 
-import { Game } from '@/domains/game/entities/game';
+import { fetchUser } from '@/domains/user/functions/fetch-user.function';
 
-import { getSupabaseServerClient } from '@/domains/shared/utils/supabase/server';
+import { gameRepository } from '@/container';
 
 export const createGame = createServerFn()
   .validator(
     z.object({
       title: z.string().min(1),
       description: z.string().optional().nullable(),
-      userId: z.string(),
     })
   )
-  .handler(async ({ data: { userId, title, description } }) => {
-    const supabase = getSupabaseServerClient();
-    const { data, error } = await supabase
-      .from('games')
-      .insert({
-        title,
-        description,
-      })
-      .select()
-      .single<Game>();
+  .handler(async ({ data: { title, description } }) => {
+    const { user } = await fetchUser();
 
-    if (error) {
-      throw new Error('Failed to create game');
+    if (!user) {
+      throw new Error('Must be logged in to create a game.');
     }
 
-    const { error: gameGmsError } = await supabase
-      .from('games_gms')
-      .insert({ game_id: data.id, gm_id: userId });
+    try {
+      const created = await gameRepository.create({
+        game: { title, description },
+        userId: user.id,
+      });
 
-    if (gameGmsError) {
-      throw new Error('Failed to assign game to user');
+      return created;
+    } catch (e) {
+      throw new Error('Cannot create game. Please try again...');
     }
-
-    return data;
   });
