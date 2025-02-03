@@ -15,31 +15,30 @@ import { Input } from '@/domains/shared/components/ui/input';
 import { FormSubmitButton } from '@/domains/shared/components/form-submit-button';
 import { useMutation } from '@/domains/shared/hooks/use-mutation';
 
-import { createSession } from '@/domains/session/functions/create-session.function';
-import { SessionInsert } from '@/domains/session/entities/session';
+import { updateSession } from '@/domains/session/functions/update-session.function';
+import type { Session } from '@/domains/session/entities/session';
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  gameId: number;
-  userId?: string;
+  session: Session;
 };
 
-export function NewSessionModal({ userId, gameId, isOpen, onClose }: Props) {
+export function UpdateSessionModal({ session, isOpen, onClose }: Props) {
   const router = useRouter();
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(session.open);
 
-  const newSessionMutation = useMutation({
-    fn: createSession,
+  const updateSessionMutation = useMutation({
+    fn: updateSession,
     onSuccess: () => {
-      toast.success('Session created!');
+      toast.success('Session updated!');
       onClose();
       router.invalidate();
     },
     onFailure: ({ error }) => {
       toast.error(
-        'Failed to create session. Check your data, or try again later. Reason:' +
+        'Failed to update session. Check your data, or try again later. Reason:' +
           error.message
       );
     },
@@ -48,18 +47,14 @@ export function NewSessionModal({ userId, gameId, isOpen, onClose }: Props) {
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
-    if (!userId) return;
-
-    const data: SessionInsert = {
-      label: e.currentTarget.elements['label'].value,
-      start_time: e.currentTarget.elements['start_time'].value,
-      end_time: e.currentTarget.elements['end_time'].value,
-      open,
-      game_id: gameId,
-    };
-
-    await newSessionMutation.mutate({
-      data,
+    await updateSessionMutation.mutate({
+      data: {
+        id: session.id,
+        label: e.currentTarget.elements['label'].value,
+        start_time: e.currentTarget.elements['start_time'].value,
+        end_time: e.currentTarget.elements['end_time'].value,
+        open,
+      },
     });
   };
 
@@ -67,14 +62,19 @@ export function NewSessionModal({ userId, gameId, isOpen, onClose }: Props) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add New Session</DialogTitle>
+          <DialogTitle>Update Session</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className='space-y-4'>
           <div className='space-y-2'>
             <Label htmlFor='label'>
               Label <span className='text-red-500'>*</span>
             </Label>
-            <Input id='label' name='label' required />
+            <Input
+              id='label'
+              name='label'
+              required
+              defaultValue={session.label}
+            />
           </div>
           <div className='flex space-x-4 w-full'>
             <div className='space-y-2 flex-1'>
@@ -86,11 +86,17 @@ export function NewSessionModal({ userId, gameId, isOpen, onClose }: Props) {
                 name='start_time'
                 type='datetime-local'
                 required
+                defaultValue={session.start_time}
               />
             </div>
             <div className='space-y-2 flex-1'>
               <Label>End Date</Label>
-              <Input id='end_time' name='end_time' type='datetime-local' />
+              <Input
+                id='end_time'
+                name='end_time'
+                type='datetime-local'
+                defaultValue={session.end_time ?? undefined}
+              />
             </div>
           </div>
           <div className='flex items-center space-x-2'>
@@ -103,7 +109,7 @@ export function NewSessionModal({ userId, gameId, isOpen, onClose }: Props) {
             <Label htmlFor='isOpen'>Open for Registration</Label>
           </div>
           <DialogFooter>
-            <FormSubmitButton>Save Session</FormSubmitButton>
+            <FormSubmitButton>Update Session</FormSubmitButton>
           </DialogFooter>
         </form>
       </DialogContent>

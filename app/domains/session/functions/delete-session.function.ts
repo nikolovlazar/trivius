@@ -2,16 +2,22 @@ import { createServerFn } from '@tanstack/start';
 import { z } from 'vinxi';
 
 import { getSupabaseServerClient } from '@/domains/shared/utils/supabase/server';
+import { fetchUser } from '@/domains/user/functions/fetch-user.function';
 
 export const deleteSession = createServerFn()
   .validator(
     z.object({
       session_id: z.number(),
-      user_id: z.string(),
     })
   )
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient();
+
+    const { user } = await fetchUser();
+
+    if (!user) {
+      throw new Error('Must be logged in to create sessions.');
+    }
 
     const { data: session, error: sessionError } = await supabase
       .from('sessions')
@@ -33,7 +39,7 @@ export const deleteSession = createServerFn()
       .from('games_gms')
       .select('*')
       .eq('game_id', game?.id)
-      .eq('gm_id', data.user_id)
+      .eq('gm_id', user.id)
       .single();
 
     if (!game || !gameGms || gameError || gameGmsError) {

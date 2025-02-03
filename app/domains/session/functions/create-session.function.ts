@@ -2,6 +2,7 @@ import { createServerFn } from '@tanstack/start';
 import { z } from 'vinxi';
 
 import { getSupabaseServerClient } from '@/domains/shared/utils/supabase/server';
+import { fetchUser } from '@/domains/user/functions/fetch-user.function';
 
 export const createSession = createServerFn()
   .validator(
@@ -9,11 +10,17 @@ export const createSession = createServerFn()
       game_id: z.number(),
       start_time: z.string(),
       open: z.boolean().default(true),
-      user_id: z.string(),
+      label: z.string().optional(),
     })
   )
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient();
+
+    const { user } = await fetchUser();
+
+    if (!user) {
+      throw new Error('Must be logged in to create sessions.');
+    }
 
     const { data: game, error: gameError } = await supabase
       .from('games')
@@ -25,7 +32,7 @@ export const createSession = createServerFn()
       .from('games_gms')
       .select('*')
       .eq('game_id', data.game_id)
-      .eq('gm_id', data.user_id)
+      .eq('gm_id', user.id)
       .single();
 
     if (!game || !gameGms || gameError || gameGmsError) {
@@ -38,6 +45,7 @@ export const createSession = createServerFn()
         game_id: data.game_id,
         start_time: data.start_time,
         open: data.open,
+        label: data.label,
       })
       .select()
       .single();

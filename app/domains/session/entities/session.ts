@@ -15,4 +15,7 @@ export type SessionInsert = MakeOptional<
   'current_question' | 'end_time' | 'id' | 'open' | 'label'
 >;
 
-export type SessionUpdate = Partial<Session>;
+export type SessionUpdate = MakeOptional<
+  Session,
+  'current_question' | 'end_time' | 'game_id' | 'open' | 'start_time' | 'label'
+>;

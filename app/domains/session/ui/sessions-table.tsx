@@ -5,7 +5,7 @@ import {
   type ColumnDef,
 } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { OctagonX, Trash2 } from 'lucide-react';
+import { OctagonX, Pencil, Trash2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { useRouter } from '@tanstack/react-router';
@@ -32,7 +32,9 @@ import {
 import { Input } from '@/domains/shared/components/ui/input';
 import { NewSessionModal } from './new-session-modal';
 import { Game } from '@/domains/game/entities/game';
-import { deleteSession } from '../functions/delete-session.function';
+import { deleteSession } from '@/domains/session/functions/delete-session.function';
+import { updateSession } from '@/domains/session/functions/update-session.function';
+import { UpdateSessionModal } from './update-session-modal';
 
 type Props = {
   sessions: Session[];
@@ -44,6 +46,7 @@ export function SessionsTable({ sessions, game, userId }: Props) {
   const router = useRouter();
 
   const [deletingSession, setDeletingSession] = useState<Session | undefined>();
+  const [updatingSession, setUpdatingSession] = useState<Session | undefined>();
   const [startNewSessionModalOpened, setStartNewSessionModalOpened] =
     useState(false);
 
@@ -55,19 +58,31 @@ export function SessionsTable({ sessions, game, userId }: Props) {
     },
   });
 
+  const updateSessionMutation = useMutation({
+    fn: updateSession,
+    onSuccess: () => {
+      toast.success('Session updated!');
+      router.invalidate();
+    },
+  });
+
   const handleDeleteSession = async () => {
     if (!deletingSession) return;
     if (!userId) return;
 
     await deleteSessionMutation.mutate({
-      data: { session_id: deletingSession.id, user_id: userId },
+      data: { session_id: deletingSession.id },
     });
   };
 
   const handleSessionOpenChange = async (
     sessionId: number,
     newValue: boolean
-  ) => {};
+  ) => {
+    await updateSessionMutation.mutate({
+      data: { id: sessionId, open: newValue },
+    });
+  };
 
   const columns: ColumnDef<Session>[] = useMemo(
     () => [
@@ -104,7 +119,7 @@ export function SessionsTable({ sessions, game, userId }: Props) {
         header: 'Start',
         cell: ({ row }) =>
           row.original.start_time
-            ? format(row.original.start_time, 'PPP, pp')
+            ? format(row.original.start_time, 'PPP - pp')
             : 'Not set',
       },
       {
@@ -112,7 +127,7 @@ export function SessionsTable({ sessions, game, userId }: Props) {
         header: 'End',
         cell: ({ row }) =>
           row.original.end_time
-            ? format(row.original.end_time, 'PPP, pp')
+            ? format(row.original.end_time, 'PPP - pp')
             : 'Not set',
       },
       {
@@ -129,12 +144,12 @@ export function SessionsTable({ sessions, game, userId }: Props) {
                   <Button
                     variant='ghost'
                     size='icon'
-                    onClick={() => setDeletingSession(row.original)}
+                    onClick={() => setUpdatingSession(row.original)}
                   >
-                    <OctagonX />
+                    <Pencil />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>Stop session</TooltipContent>
+                <TooltipContent>Update session</TooltipContent>
               </Tooltip>
             </TooltipProvider>
             <TooltipProvider>
@@ -238,6 +253,14 @@ export function SessionsTable({ sessions, game, userId }: Props) {
           onClose={() => setDeletingSession(undefined)}
           onConfirm={handleDeleteSession}
           itemName={deletingSession.label}
+        />
+      )}
+
+      {updatingSession && (
+        <UpdateSessionModal
+          isOpen={!!updatingSession}
+          onClose={() => setUpdatingSession(undefined)}
+          session={updatingSession}
         />
       )}
 
