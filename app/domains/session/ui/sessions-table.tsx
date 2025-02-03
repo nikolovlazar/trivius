@@ -5,7 +5,7 @@ import {
   type ColumnDef,
 } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { OctagonX, Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { useRouter } from '@tanstack/react-router';
