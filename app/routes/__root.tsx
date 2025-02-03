@@ -1,4 +1,3 @@
-import { AUTH_COOKIE_NAME } from '@/config';
 import {
   CatchBoundary,
   Outlet,
@@ -28,20 +27,6 @@ const TanStackRouterDevtools =
         }))
       );
 
-const loadClientCookies = async (name: string) => {
-  const { getClientCookies } = await import(
-    '@/domains/shared/utils/client-cookies'
-  );
-  return getClientCookies(name);
-};
-
-const loadServerCookies = async (name: string) => {
-  const { getServerCookies } = await import(
-    '@/domains/shared/utils/server-cookies'
-  );
-  return getServerCookies(name);
-};
-
 export const Route = createRootRoute({
   head: () => ({
     meta: [
@@ -60,21 +45,8 @@ export const Route = createRootRoute({
   }),
   component: RootComponent,
   beforeLoad: async () => {
-    let cookie: string | undefined;
-
-    if (typeof window === 'undefined') {
-      cookie = await loadServerCookies(AUTH_COOKIE_NAME);
-    } else {
-      cookie = await loadClientCookies(AUTH_COOKIE_NAME);
-    }
-
-    if (cookie) {
-      const { access_token } = JSON.parse(atob(cookie.replace('base64-', '')));
-      const { user } = await fetchUser({ data: access_token });
-      return { user };
-    }
-
-    return { user: undefined };
+    const { user } = await fetchUser();
+    return { user };
   },
   notFoundComponent: NotFound,
 });
