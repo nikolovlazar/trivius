@@ -3,6 +3,7 @@ import {
   type ColumnDef,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 import { format } from 'date-fns';
@@ -89,11 +90,13 @@ export function SessionsTable({ sessions, game, userId }: Props) {
   const columns: ColumnDef<Session>[] = useMemo(
     () => [
       {
+        id: 'id',
         accessorKey: 'id',
         header: 'ID',
         meta: {
           className: 'w-[46px]',
         },
+        sortingFn: 'auto',
       },
       {
         accessorKey: 'open',
@@ -180,6 +183,10 @@ export function SessionsTable({ sessions, game, userId }: Props) {
     data: sessions,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    initialState: {
+      sorting: [{ id: 'id', desc: false }],
+    },
   });
 
   return (
