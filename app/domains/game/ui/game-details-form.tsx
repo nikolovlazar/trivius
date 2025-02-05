@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 
 import { type Game, GameUpdate } from '@/domains/game/entities/game';
 import { deleteGame } from '@/domains/game/functions/delete-game.function';
+import { updateGame } from '@/domains/game/functions/update-game.function';
 
 import { ConfirmDeletion } from '@/domains/shared/components/confirm-deletion';
 import { Button } from '@/domains/shared/components/ui/button';
@@ -27,26 +28,38 @@ export function GameDetailsForm({ game }: Props) {
     },
   });
 
+  const updateGameMutation = useMutation({
+    fn: updateGame,
+    onSuccess: () => {
+      toast.success('Game updated!');
+    },
+  });
+
   const handleGameDelete = useCallback(() => {
     deleteGameMutation.mutate({ data: game.id });
   }, []);
 
-  const onSubmit: FormEventHandler<HTMLFormElement> = useCallback((e) => {
-    e.preventDefault();
+  const handleGameUpdate: FormEventHandler<HTMLFormElement> = useCallback(
+    (e) => {
+      e.preventDefault();
 
-    const updating: GameUpdate = {
-      id: game.id,
-      title: e.currentTarget.elements['title'].value,
-      description: e.currentTarget.elements['description'].value,
-      answer_window: e.currentTarget.elements['answer_window'].value,
-    };
-
-    console.log('Updating', updating.title);
-  }, []);
+      updateGameMutation.mutate({
+        data: {
+          id: game.id,
+          title: e.currentTarget.elements['title'].value,
+          description: e.currentTarget.elements['description'].value,
+          answer_window: parseInt(
+            e.currentTarget.elements['answer_window'].value
+          ),
+        },
+      });
+    },
+    []
+  );
 
   return (
     <>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleGameUpdate}>
         <fieldset className='border rounded-lg p-6 space-y-4'>
           <legend className='text-lg font-semibold px-2 -mb-4'>
             Game Details
