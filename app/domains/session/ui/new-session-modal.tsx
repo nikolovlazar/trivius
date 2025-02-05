@@ -50,11 +50,14 @@ export function NewSessionModal({ userId, gameId, isOpen, onClose }: Props) {
 
     if (!userId) return;
 
+    const start_time = e.currentTarget.elements['start_time'].value;
+    const end_time = e.currentTarget.elements['end_time'].value;
+
     const data: SessionInsert = {
-      label: e.currentTarget.elements['label'].value,
-      start_time: e.currentTarget.elements['start_time'].value,
-      end_time: e.currentTarget.elements['end_time'].value,
       open,
+      label: e.currentTarget.elements['label'].value,
+      start_time: start_time.length > 0 ? start_time : null,
+      end_time: end_time.length > 0 ? end_time : null,
       game_id: gameId,
     };
 

@@ -10,7 +10,8 @@ export const createSession = createServerFn()
   .validator(
     z.object({
       game_id: z.number(),
-      start_time: z.string(),
+      start_time: z.string().nullable(),
+      end_time: z.string().nullable(),
       open: z.boolean().default(true),
       label: z.string().optional(),
     })
