@@ -2,7 +2,7 @@ import { useRouter } from '@tanstack/react-router';
 import { FormEventHandler, useCallback, useState } from 'react';
 import { toast } from 'sonner';
 
-import { type Game, GameUpdate } from '@/domains/game/entities/game';
+import { type Game } from '@/domains/game/entities/game';
 import { deleteGame } from '@/domains/game/functions/delete-game.function';
 import { updateGame } from '@/domains/game/functions/update-game.function';
 
@@ -38,6 +38,14 @@ export function GameDetailsForm({ game }: Props) {
   const handleGameDelete = useCallback(() => {
     deleteGameMutation.mutate({ data: game.id });
   }, []);
+
+  const toggleDeletingModal = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      setDeleting(!deleting);
+    },
+    [deleting]
+  );
 
   const handleGameUpdate: FormEventHandler<HTMLFormElement> = useCallback(
     (e) => {
@@ -103,7 +111,7 @@ export function GameDetailsForm({ game }: Props) {
             </div>
           </div>
           <div className='flex gap-2 justify-end'>
-            <Button variant='destructive' onClick={() => setDeleting(true)}>
+            <Button variant='destructive' onClick={toggleDeletingModal}>
               Delete
             </Button>
             <Button type='submit'>Update</Button>
