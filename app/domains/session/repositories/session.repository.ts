@@ -45,11 +45,7 @@ export class SessionRepository implements ISessionRepository {
   }
 
   async update(data: SessionUpdate): Promise<Session> {
-    const updatingData: SessionUpdate = { id: data.id };
-
-    if (data.open) {
-      updatingData.open = data.open;
-    }
+    const updatingData: SessionUpdate = { id: data.id, open: data.open };
 
     if (data.start_time && data.start_time.length > 0) {
       updatingData.start_time = data.start_time;
