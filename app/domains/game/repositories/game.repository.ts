@@ -30,7 +30,7 @@ export class GameRepository implements IGameRepository {
     return !!error || !data;
   }
 
-  async get(id: Game['id']): Promise<Game | null> {
+  async get(id: Game['id']): Promise<Game> {
     const { data, error } = await this._db
       .from('games')
       .select('*')
@@ -38,7 +38,7 @@ export class GameRepository implements IGameRepository {
       .single<Game>();
 
     if (!data || error) {
-      return null;
+      throw new Error('Game does not exist');
     }
 
     return data;

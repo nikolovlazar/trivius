@@ -7,7 +7,7 @@ import type {
 } from '@/domains/game/entities/game';
 
 export interface IGameRepository {
-  get(id: Game['id']): Promise<Game | null>;
+  get(id: Game['id']): Promise<Game>;
   belongsTo(gameId: Game['id'], userId: string): Promise<boolean>;
   getUsersGamesWithSessions(
     userId: string
