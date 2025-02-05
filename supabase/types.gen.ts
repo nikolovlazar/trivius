@@ -210,7 +210,7 @@ export type Database = {
           id: number
           label: string
           open: boolean
-          start_time: string
+          start_time: string | null
         }
         Insert: {
           current_question?: number | null
@@ -219,7 +219,7 @@ export type Database = {
           id?: number
           label?: string
           open?: boolean
-          start_time: string
+          start_time?: string | null
         }
         Update: {
           current_question?: number | null
@@ -228,7 +228,7 @@ export type Database = {
           id?: number
           label?: string
           open?: boolean
-          start_time?: string
+          start_time?: string | null
         }
         Relationships: [
           {
