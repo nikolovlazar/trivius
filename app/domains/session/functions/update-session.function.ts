@@ -3,11 +3,12 @@ import { z } from 'vinxi';
 
 import { Session } from '@/domains/session/entities/session';
 
-import { fetchUser } from '@/domains/user/functions/fetch-user.function';
+import { authMiddleware } from '@/domains/shared/middleware/auth.middleware';
 
 import { gameRepository, sessionRepository } from '@/container';
 
 export const updateSession = createServerFn()
+  .middleware([authMiddleware])
   .validator(
     z.object({
       id: z.number(),
@@ -17,13 +18,7 @@ export const updateSession = createServerFn()
       label: z.string().optional(),
     })
   )
-  .handler(async ({ data }) => {
-    const { user } = await fetchUser();
-
-    if (!user) {
-      throw new Error('Must be logged in to update sessions.');
-    }
-
+  .handler(async ({ data, context: { user } }) => {
     let session: Session;
     try {
       session = await sessionRepository.get(data.id);

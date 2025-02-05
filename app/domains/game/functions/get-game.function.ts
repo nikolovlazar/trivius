@@ -12,8 +12,10 @@ import { gameRepository, sessionRepository } from '@/container';
 export const getGame = createServerFn()
   .validator(z.number())
   .handler(async ({ data }) => {
-    const game = await gameRepository.get(data);
-    if (!game) {
+    let game: Game;
+    try {
+      game = await gameRepository.get(data);
+    } catch (error) {
       throw new Error('Game not found');
     }
 

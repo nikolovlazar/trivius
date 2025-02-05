@@ -1,11 +1,12 @@
 import { createServerFn } from '@tanstack/start';
 import { z } from 'vinxi';
 
-import { fetchUser } from '@/domains/user/functions/fetch-user.function';
+import { authMiddleware } from '@/domains/shared/middleware/auth.middleware';
 
 import { gameRepository, sessionRepository } from '@/container';
 
 export const createSession = createServerFn()
+  .middleware([authMiddleware])
   .validator(
     z.object({
       game_id: z.number(),
@@ -14,13 +15,7 @@ export const createSession = createServerFn()
       label: z.string().optional(),
     })
   )
-  .handler(async ({ data }) => {
-    const { user } = await fetchUser();
-
-    if (!user) {
-      throw new Error('Must be logged in to create sessions.');
-    }
-
+  .handler(async ({ data, context: { user } }) => {
     const gameBelongsToUser = await gameRepository.belongsTo(
       data.game_id,
       user.id

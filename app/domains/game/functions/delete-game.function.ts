@@ -3,19 +3,14 @@ import { z } from 'vinxi';
 
 import { Game } from '@/domains/game/entities/game';
 
-import { fetchUser } from '@/domains/user/functions/fetch-user.function';
+import { authMiddleware } from '@/domains/shared/middleware/auth.middleware';
 
 import { gameRepository } from '@/container';
 
 export const deleteGame = createServerFn()
+  .middleware([authMiddleware])
   .validator(z.number())
-  .handler(async ({ data }) => {
-    const { user } = await fetchUser();
-
-    if (!user) {
-      throw new Error('User not found');
-    }
-
+  .handler(async ({ data, context: { user } }) => {
     let game: Game;
 
     try {
