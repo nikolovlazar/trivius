@@ -7,7 +7,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Share, Trash2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -16,6 +16,7 @@ import { deleteSession } from '@/domains/session/functions/delete-session.functi
 import { updateSession } from '@/domains/session/functions/update-session.function';
 import { NewSessionModal } from '@/domains/session/ui/new-session-modal';
 import { SessionOpenSwitch } from '@/domains/session/ui/session-open-switch';
+import { SessionShareModal } from '@/domains/session/ui/session-share-modal';
 import { UpdateSessionModal } from '@/domains/session/ui/update-session-modal';
 
 import { Game } from '@/domains/game/entities/game';
@@ -50,6 +51,7 @@ export function SessionsTable({ sessions, game, userId }: Props) {
 
   const [deletingSession, setDeletingSession] = useState<Session | undefined>();
   const [updatingSession, setUpdatingSession] = useState<Session | undefined>();
+  const [sharingSession, setSharingSession] = useState<Session | undefined>();
   const [startNewSessionModalOpened, setStartNewSessionModalOpened] =
     useState(false);
 
@@ -139,10 +141,24 @@ export function SessionsTable({ sessions, game, userId }: Props) {
         id: 'actions',
         header: '',
         meta: {
-          className: 'w-[92px]',
+          className: 'w-[120px]',
         },
         cell: ({ row }) => (
           <div className='flex gap-1'>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant='ghost'
+                    size='icon'
+                    onClick={() => setSharingSession(row.original)}
+                  >
+                    <Share />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Share session</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -279,6 +295,15 @@ export function SessionsTable({ sessions, game, userId }: Props) {
           onClose={() => setStartNewSessionModalOpened(false)}
           gameId={game.id}
           userId={userId}
+        />
+      )}
+
+      {sharingSession && (
+        <SessionShareModal
+          isOpen={!!sharingSession}
+          onClose={() => setSharingSession(undefined)}
+          sessionId={sharingSession.id}
+          gameTitle={game.title}
         />
       )}
     </>
