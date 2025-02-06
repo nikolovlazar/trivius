@@ -5,7 +5,6 @@ import { toast } from 'sonner';
 import { deleteGame } from '@/domains/game/functions/delete-game.function';
 import { updateGame } from '@/domains/game/functions/update-game.function';
 import { type Game } from '@/domains/game/types/game';
-
 import { ConfirmDeletion } from '@/domains/shared/components/confirm-deletion';
 import { Button } from '@/domains/shared/components/ui/button';
 import { Input } from '@/domains/shared/components/ui/input';

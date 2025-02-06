@@ -1,10 +1,8 @@
 import { createServerFn } from '@tanstack/start';
 import { z } from 'vinxi';
 
-import { Session } from '@/domains/session/types/session';
-
 import { Game } from '@/domains/game/types/game';
-
+import { Session } from '@/domains/session/types/session';
 import { fetchUser } from '@/domains/user/functions/fetch-user.function';
 
 import { gameRepository, sessionRepository } from '@/container';

@@ -1,10 +1,9 @@
+import type { Game } from '@/domains/game/types/game';
 import type {
   Session,
   SessionInsert,
   SessionUpdate,
 } from '@/domains/session/types/session';
-
-import type { Game } from '@/domains/game/types/game';
 
 export interface ISessionRepository {
   get(id: Session['id']): Promise<Session>;

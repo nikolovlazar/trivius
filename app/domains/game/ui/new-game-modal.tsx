@@ -4,9 +4,7 @@ import { toast } from 'sonner';
 
 import { createGame } from '@/domains/game/functions/create-game.function';
 import { GameInsert } from '@/domains/game/types/game';
-
 import { FormSubmitButton } from '@/domains/shared/components/form-submit-button';
-import { Button } from '@/domains/shared/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -49,7 +47,7 @@ export function NewGameModal({
       description: e.currentTarget.elements['description'].value,
     };
 
-    newGameMutation.mutate({ data: { ...newGame, userId: user.id } });
+    newGameMutation.mutate({ data: newGame });
   };
 
   return (

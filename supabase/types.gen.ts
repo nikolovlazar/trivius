@@ -34,32 +34,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      answers: {
-        Row: {
-          content: string
-          id: number
-          question_id: number
-        }
-        Insert: {
-          content: string
-          id?: number
-          question_id: number
-        }
-        Update: {
-          content?: string
-          id?: number
-          question_id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "answers_question_id_fkey"
-            columns: ["question_id"]
-            isOneToOne: false
-            referencedRelation: "questions"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       games: {
         Row: {
           answer_window: number | null
@@ -168,39 +142,36 @@ export type Database = {
       }
       questions: {
         Row: {
-          answer_id: number
+          answer_1_content: string
+          answer_2_content: string
+          answer_3_content: string
+          answer_4_content: string
           content: string
           game_id: number | null
           id: number
+          right_answer_index: number
         }
         Insert: {
-          answer_id: number
+          answer_1_content: string
+          answer_2_content: string
+          answer_3_content: string
+          answer_4_content: string
           content: string
           game_id?: number | null
           id?: number
+          right_answer_index?: number
         }
         Update: {
-          answer_id?: number
+          answer_1_content?: string
+          answer_2_content?: string
+          answer_3_content?: string
+          answer_4_content?: string
           content?: string
           game_id?: number | null
           id?: number
+          right_answer_index?: number
         }
-        Relationships: [
-          {
-            foreignKeyName: "questions_answer_id_fkey"
-            columns: ["answer_id"]
-            isOneToOne: false
-            referencedRelation: "answers"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "questions_game_id_fkey"
-            columns: ["game_id"]
-            isOneToOne: false
-            referencedRelation: "games"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       sessions: {
         Row: {
@@ -210,7 +181,7 @@ export type Database = {
           id: number
           label: string
           open: boolean
-          start_time: string | null
+          start_time: string
         }
         Insert: {
           current_question?: number | null
@@ -219,7 +190,7 @@ export type Database = {
           id?: number
           label?: string
           open?: boolean
-          start_time?: string | null
+          start_time: string
         }
         Update: {
           current_question?: number | null
@@ -228,7 +199,7 @@ export type Database = {
           id?: number
           label?: string
           open?: boolean
-          start_time?: string | null
+          start_time?: string
         }
         Relationships: [
           {

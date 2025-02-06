@@ -9,14 +9,7 @@
   "arrowParens": "always",
   "endOfLine": "lf",
   "plugins": ["@trivago/prettier-plugin-sort-imports"],
-  "importOrder": [
-    "^@/domains/session/(.*)$",
-    "^@/domains/game/(.*)$",
-    "^@/domains/user/(.*)$",
-    "^@/domains/shared/(.*)$",
-    "^@/container$",
-    "^[./]"
-  ],
+  "importOrder": ["^@/domains/(.*)$", "^@/container$", "^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true
 }

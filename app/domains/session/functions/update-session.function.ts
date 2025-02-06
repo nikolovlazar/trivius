@@ -2,7 +2,6 @@ import { createServerFn } from '@tanstack/start';
 import { z } from 'vinxi';
 
 import { Session } from '@/domains/session/types/session';
-
 import { authMiddleware } from '@/domains/shared/middleware/auth.middleware';
 
 import { gameRepository, sessionRepository } from '@/container';

@@ -1,9 +1,8 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router';
 
+import { useMutation } from '@/domains/shared/hooks/use-mutation';
 import { signupFn } from '@/domains/user/functions/sign-up.function';
 import { Auth } from '@/domains/user/ui/auth';
-
-import { useMutation } from '@/domains/shared/hooks/use-mutation';
 
 export const Route = createFileRoute('/_auth/signup')({
   component: SignupPage,

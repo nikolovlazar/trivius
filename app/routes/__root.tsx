@@ -8,10 +8,9 @@ import {
 import { Meta, Scripts } from '@tanstack/start';
 import { type ReactNode, lazy } from 'react';
 
-import { fetchUser } from '@/domains/user/functions/fetch-user.function';
-
 import { NotFound } from '@/domains/shared/components/not-found';
 import { Toaster } from '@/domains/shared/components/ui/sonner';
+import { fetchUser } from '@/domains/user/functions/fetch-user.function';
 
 import globalCss from '../global.css?url';
 

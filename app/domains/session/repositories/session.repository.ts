@@ -1,14 +1,12 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 
+import { Game } from '@/domains/game/types/game';
 import { ISessionRepository } from '@/domains/session/repositories/session.repository.interface';
 import {
   Session,
   SessionInsert,
   SessionUpdate,
 } from '@/domains/session/types/session';
-
-import { Game } from '@/domains/game/types/game';
-
 import { getSupabaseServerClient } from '@/domains/shared/utils/supabase/server';
 
 export class SessionRepository implements ISessionRepository {

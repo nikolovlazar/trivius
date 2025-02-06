@@ -6,19 +6,13 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { format } from 'date-fns';
-import { Pencil, Share, Trash2 } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
 import { Game } from '@/domains/game/types/game';
-import { deleteSession } from '@/domains/session/functions/delete-session.function';
-import { updateSession } from '@/domains/session/functions/update-session.function';
-import { Session } from '@/domains/session/types/session';
-import { NewSessionModal } from '@/domains/session/ui/new-session-modal';
-import { SessionOpenSwitch } from '@/domains/session/ui/session-open-switch';
-import { SessionShareModal } from '@/domains/session/ui/session-share-modal';
-import { UpdateSessionModal } from '@/domains/session/ui/update-session-modal';
+import { Question } from '@/domains/qna/types/question';
+import { NewQuestionModal } from '@/domains/qna/ui/new-question-modal';
 import { ConfirmDeletion } from '@/domains/shared/components/confirm-deletion';
 import { Button } from '@/domains/shared/components/ui/button';
 import { Input } from '@/domains/shared/components/ui/input';
@@ -39,55 +33,57 @@ import {
 import { useMutation } from '@/domains/shared/hooks/use-mutation';
 
 type Props = {
-  sessions: Session[];
+  questions: Question[];
   game: Game;
   userId?: string;
 };
 
-export function SessionsTable({ sessions, game, userId }: Props) {
+export function QuestionsTable({ questions, game, userId }: Props) {
   const router = useRouter();
 
-  const [deletingSession, setDeletingSession] = useState<Session | undefined>();
-  const [updatingSession, setUpdatingSession] = useState<Session | undefined>();
-  const [sharingSession, setSharingSession] = useState<Session | undefined>();
-  const [startNewSessionModalOpened, setStartNewSessionModalOpened] =
-    useState(false);
+  const [deletingQuestion, setDeletingQuestion] = useState<
+    Question | undefined
+  >();
+  const [updatingQuestion, setUpdatingQuestion] = useState<
+    Question | undefined
+  >();
+  const [addQuestionModalOpened, setAddQuestionModalOpened] = useState(false);
 
-  const deleteSessionMutation = useMutation({
-    fn: deleteSession,
+  const deleteQuestionMutation = useMutation({
+    fn: () => Promise.resolve(),
     onSuccess: () => {
-      toast.success('Session deleted!');
+      toast.success('Question deleted!');
       router.invalidate();
     },
   });
 
-  const updateSessionMutation = useMutation({
-    fn: updateSession,
+  const updateQuestionMutation = useMutation({
+    fn: () => Promise.resolve(),
     onSuccess: () => {
-      toast.success('Session updated!');
+      toast.success('Question updated!');
       router.invalidate();
     },
   });
 
-  const handleDeleteSession = async () => {
-    if (!deletingSession) return;
+  const handleDeleteQuestion = async () => {
+    if (!deletingQuestion) return;
     if (!userId) return;
 
-    await deleteSessionMutation.mutate({
-      data: { session_id: deletingSession.id },
+    await deleteQuestionMutation.mutate({
+      data: { id: deletingQuestion.id },
     });
   };
 
-  const handleSessionOpenChange = async (
-    sessionId: number,
+  const handleQuestionUpdate = async (
+    questionId: number,
     newValue: boolean
   ) => {
-    await updateSessionMutation.mutate({
-      data: { id: sessionId, open: newValue },
+    await updateQuestionMutation.mutate({
+      data: { id: questionId, open: newValue },
     });
   };
 
-  const columns: ColumnDef<Session>[] = useMemo(
+  const columns: ColumnDef<Question>[] = useMemo(
     () => [
       {
         id: 'id',
@@ -99,41 +95,11 @@ export function SessionsTable({ sessions, game, userId }: Props) {
         sortingFn: 'auto',
       },
       {
-        accessorKey: 'open',
-        header: 'Open',
-        meta: {
-          className: 'w-[54px]',
-        },
-        cell: ({ row }) => (
-          <SessionOpenSwitch
-            sessionId={row.original.id}
-            open={row.original.open}
-            onToggle={handleSessionOpenChange}
-          />
-        ),
-      },
-      {
-        accessorKey: 'label',
-        header: 'Label',
+        accessorKey: 'content',
+        header: 'Question',
         meta: {
           className: 'flex-1',
         },
-      },
-      {
-        accessorKey: 'start_time',
-        header: 'Start',
-        cell: ({ row }) =>
-          row.original.start_time
-            ? format(row.original.start_time, 'PP, p')
-            : 'Not set',
-      },
-      {
-        accessorKey: 'end_time',
-        header: 'End',
-        cell: ({ row }) =>
-          row.original.end_time
-            ? format(row.original.end_time, 'PP, p')
-            : 'Not set',
       },
       {
         id: 'actions',
@@ -149,24 +115,12 @@ export function SessionsTable({ sessions, game, userId }: Props) {
                   <Button
                     variant='ghost'
                     size='icon'
-                    onClick={() => setSharingSession(row.original)}
-                  >
-                    <Share />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Share session</TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant='ghost'
-                    size='icon'
-                    onClick={() => setUpdatingSession(row.original)}
+                    onClick={() => setUpdatingQuestion(row.original)}
                   >
                     <Pencil />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>Update session</TooltipContent>
+                <TooltipContent>Update question</TooltipContent>
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -174,12 +128,12 @@ export function SessionsTable({ sessions, game, userId }: Props) {
                     variant='ghost'
                     className='text-destructive'
                     size='icon'
-                    onClick={() => setDeletingSession(row.original)}
+                    onClick={() => setDeletingQuestion(row.original)}
                   >
                     <Trash2 />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>Delete session</TooltipContent>
+                <TooltipContent>Delete question</TooltipContent>
               </Tooltip>
             </TooltipProvider>
           </div>
@@ -190,7 +144,7 @@ export function SessionsTable({ sessions, game, userId }: Props) {
   );
 
   const table = useReactTable({
-    data: sessions,
+    data: questions,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -202,11 +156,11 @@ export function SessionsTable({ sessions, game, userId }: Props) {
   return (
     <>
       <fieldset className='border rounded-lg pt-6 px-6 space-y-4'>
-        <legend className='text-lg font-semibold px-2 -mb-4'>Sessions</legend>
+        <legend className='text-lg font-semibold px-2 -mb-4'>Questions</legend>
         <div className='flex justify-between'>
-          <Input className='max-w-[300px]' placeholder='Search sessions...' />
-          <Button onClick={() => setStartNewSessionModalOpened(true)}>
-            Start new session
+          <Input className='max-w-[300px]' placeholder='Search questions...' />
+          <Button onClick={() => setAddQuestionModalOpened(true)}>
+            Add question
           </Button>
         </div>
         <div className='-mx-6'>
@@ -256,7 +210,7 @@ export function SessionsTable({ sessions, game, userId }: Props) {
                     colSpan={columns.length}
                     className='h-24 text-center'
                   >
-                    No sessions for this game have been created yet.
+                    No questions for this game have been created yet.
                   </TableCell>
                 </TableRow>
               )}
@@ -265,39 +219,29 @@ export function SessionsTable({ sessions, game, userId }: Props) {
         </div>
       </fieldset>
 
-      {deletingSession && (
+      {deletingQuestion && (
         <ConfirmDeletion
-          title={`Are you sure you want to delete this session?`}
-          isOpen={!!deletingSession}
-          onClose={() => setDeletingSession(undefined)}
-          onConfirm={handleDeleteSession}
-          itemName={deletingSession.label}
+          title={`Are you sure you want to delete this question?`}
+          isOpen={!!deletingQuestion}
+          onClose={() => setDeletingQuestion(undefined)}
+          onConfirm={handleDeleteQuestion}
+          itemName={deletingQuestion.content}
         />
       )}
 
-      {updatingSession && (
-        <UpdateSessionModal
-          isOpen={!!updatingSession}
-          onClose={() => setUpdatingSession(undefined)}
-          session={updatingSession}
+      {/* {updatingQuestion && (
+        <UpdateQuestionModal
+          isOpen={!!updatingQuestion}
+          onClose={() => setUpdatingQuestion(undefined)}
+          question={updatingQuestion}
         />
-      )}
+      )} */}
 
-      {startNewSessionModalOpened && (
-        <NewSessionModal
-          isOpen={startNewSessionModalOpened}
-          onClose={() => setStartNewSessionModalOpened(false)}
+      {addQuestionModalOpened && (
+        <NewQuestionModal
+          isOpen={addQuestionModalOpened}
+          onClose={() => setAddQuestionModalOpened(false)}
           gameId={game.id}
-          userId={userId}
-        />
-      )}
-
-      {sharingSession && (
-        <SessionShareModal
-          isOpen={!!sharingSession}
-          onClose={() => setSharingSession(undefined)}
-          sessionId={sharingSession.id}
-          gameTitle={game.title}
         />
       )}
     </>

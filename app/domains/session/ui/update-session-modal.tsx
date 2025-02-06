@@ -4,7 +4,6 @@ import { toast } from 'sonner';
 
 import { updateSession } from '@/domains/session/functions/update-session.function';
 import type { Session } from '@/domains/session/types/session';
-
 import { FormSubmitButton } from '@/domains/shared/components/form-submit-button';
 import {
   Dialog,
