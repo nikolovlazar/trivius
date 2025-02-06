@@ -2,8 +2,8 @@ import { useRouteContext, useRouter } from '@tanstack/react-router';
 import { FormEventHandler, useState } from 'react';
 import { toast } from 'sonner';
 
-import { GameInsert } from '@/domains/game/entities/game';
 import { createGame } from '@/domains/game/functions/create-game.function';
+import { GameInsert } from '@/domains/game/types/game';
 
 import { FormSubmitButton } from '@/domains/shared/components/form-submit-button';
 import { Button } from '@/domains/shared/components/ui/button';

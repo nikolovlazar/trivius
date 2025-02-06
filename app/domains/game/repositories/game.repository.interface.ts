@@ -1,10 +1,6 @@
-import type { Session } from '@/domains/session/entities/session';
+import type { Session } from '@/domains/session/types/session';
 
-import type {
-  Game,
-  GameInsert,
-  GameUpdate,
-} from '@/domains/game/entities/game';
+import type { Game, GameInsert, GameUpdate } from '@/domains/game/types/game';
 
 export interface IGameRepository {
   get(id: Game['id']): Promise<Game>;

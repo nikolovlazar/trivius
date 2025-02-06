@@ -1,13 +1,9 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 
-import type { Session } from '@/domains/session/entities/session';
+import type { Session } from '@/domains/session/types/session';
 
-import type {
-  Game,
-  GameInsert,
-  GameUpdate,
-} from '@/domains/game/entities/game';
 import { IGameRepository } from '@/domains/game/repositories/game.repository.interface';
+import type { Game, GameInsert, GameUpdate } from '@/domains/game/types/game';
 
 import { getSupabaseServerClient } from '@/domains/shared/utils/supabase/server';
 

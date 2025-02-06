@@ -10,10 +10,10 @@ import { Trash2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
-import { Session } from '@/domains/session/entities/session';
+import { Session } from '@/domains/session/types/session';
 
-import { Game } from '@/domains/game/entities/game';
 import { deleteGame } from '@/domains/game/functions/delete-game.function';
+import { Game } from '@/domains/game/types/game';
 
 import { ConfirmDeletion } from '@/domains/shared/components/confirm-deletion';
 import { Button } from '@/domains/shared/components/ui/button';

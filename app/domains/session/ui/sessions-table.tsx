@@ -11,15 +11,15 @@ import { Pencil, Share, Trash2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
-import { Session } from '@/domains/session/entities/session';
 import { deleteSession } from '@/domains/session/functions/delete-session.function';
 import { updateSession } from '@/domains/session/functions/update-session.function';
+import { Session } from '@/domains/session/types/session';
 import { NewSessionModal } from '@/domains/session/ui/new-session-modal';
 import { SessionOpenSwitch } from '@/domains/session/ui/session-open-switch';
 import { SessionShareModal } from '@/domains/session/ui/session-share-modal';
 import { UpdateSessionModal } from '@/domains/session/ui/update-session-modal';
 
-import { Game } from '@/domains/game/entities/game';
+import { Game } from '@/domains/game/types/game';
 
 import { ConfirmDeletion } from '@/domains/shared/components/confirm-deletion';
 import { Button } from '@/domains/shared/components/ui/button';

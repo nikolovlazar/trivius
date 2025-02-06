@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/start';
 import { z } from 'vinxi';
 
-import { Game } from '@/domains/game/entities/game';
+import { Game } from '@/domains/game/types/game';
 
 import { authMiddleware } from '@/domains/shared/middleware/auth.middleware';
 

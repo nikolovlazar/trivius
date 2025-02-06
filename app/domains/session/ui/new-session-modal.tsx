@@ -2,8 +2,8 @@ import { useRouter } from '@tanstack/react-router';
 import { FormEventHandler, useState } from 'react';
 import { toast } from 'sonner';
 
-import { SessionInsert } from '@/domains/session/entities/session';
 import { createSession } from '@/domains/session/functions/create-session.function';
+import { SessionInsert } from '@/domains/session/types/session';
 
 import { FormSubmitButton } from '@/domains/shared/components/form-submit-button';
 import {
