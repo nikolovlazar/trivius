@@ -17,10 +17,9 @@ export const createSession = createServerFn()
     })
   )
   .handler(async ({ data, context: { user } }) => {
-    const gameBelongsToUser = await gameRepository.belongsTo(
-      data.game_id,
-      user.id
-    );
+    const gameMastersIds = await gameRepository.getGameMastersIds(data.game_id);
+
+    const gameBelongsToUser = gameMastersIds.includes(user.id);
 
     if (!gameBelongsToUser) {
       throw new Error('Game does not belong to user');

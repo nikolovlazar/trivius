@@ -8,7 +8,7 @@ import type {
 
 export interface IGameRepository {
   get(id: Game['id']): Promise<Game>;
-  belongsTo(gameId: Game['id'], userId: string): Promise<boolean>;
+  getGameMastersIds(gameId: Game['id']): Promise<string[]>;
   getUsersGamesWithSessions(
     userId: string
   ): Promise<{ game: Game; sessions: Session[] }[]>;

@@ -18,16 +18,17 @@ export class GameRepository implements IGameRepository {
     this._db = getSupabaseServerClient();
   }
 
-  async belongsTo(gameId: Game['id'], userId: string): Promise<boolean> {
+  async getGameMastersIds(gameId: Game['id']): Promise<string[]> {
     const { data, error } = await this._db
-      .from('game_gms')
-      .select('*')
-      .eq('gm_id', userId)
-      .eq('game_id', gameId)
-      .select()
-      .single();
+      .from('games_gms')
+      .select('gm_id')
+      .eq('game_id', gameId);
 
-    return !!error || !data;
+    if (error) {
+      throw new Error('Cannot get game masters');
+    }
+
+    return data.map((gm) => gm.gm_id);
   }
 
   async get(id: Game['id']): Promise<Game> {
@@ -133,7 +134,6 @@ export class GameRepository implements IGameRepository {
       .from('games')
       .delete()
       .eq('id', gameId)
-      .select()
       .single<Game>();
 
     const gameGmPromise = this._db

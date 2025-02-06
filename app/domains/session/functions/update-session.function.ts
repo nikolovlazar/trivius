@@ -26,10 +26,11 @@ export const updateSession = createServerFn()
       throw new Error('Session does not exist');
     }
 
-    const gameBelongsToUser = await gameRepository.belongsTo(
-      session.game_id,
-      user.id
+    const gameMastersIds = await gameRepository.getGameMastersIds(
+      session.game_id
     );
+
+    const gameBelongsToUser = gameMastersIds.includes(user.id);
 
     if (!gameBelongsToUser) {
       throw new Error('Game does not belong to user');

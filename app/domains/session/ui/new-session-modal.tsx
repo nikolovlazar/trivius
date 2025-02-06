@@ -81,9 +81,7 @@ export function NewSessionModal({ userId, gameId, isOpen, onClose }: Props) {
           </div>
           <div className='flex space-x-4 w-full'>
             <div className='space-y-2 flex-1'>
-              <Label>
-                Start Date <span className='text-red-500'>*</span>
-              </Label>
+              <Label>Start Date</Label>
               <Input
                 id='start_time'
                 name='start_time'

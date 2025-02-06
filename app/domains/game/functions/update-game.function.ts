@@ -29,10 +29,9 @@ export const updateGame = createServerFn()
         throw new Error('Game does not exist');
       }
 
-      const gameBelongsToUser = await gameRepository.belongsTo(
-        game.id,
-        user.id
-      );
+      const gameMastersIds = await gameRepository.getGameMastersIds(game.id);
+
+      const gameBelongsToUser = gameMastersIds.includes(user.id);
 
       if (!gameBelongsToUser) {
         throw new Error('Game does not belong to user');
