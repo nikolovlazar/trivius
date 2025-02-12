@@ -2,8 +2,8 @@ import { createFileRoute } from '@tanstack/react-router';
 
 import { getGame } from '@/domains/game/functions/get-game.function';
 import { GameDetailsForm } from '@/domains/game/ui/game-details-form';
-import { getQuestions } from '@/domains/qna/functions/get-questions.function';
-import { QuestionsTable } from '@/domains/qna/ui/questions-table';
+import { getQuestions } from '@/domains/question/functions/get-questions.function';
+import { QuestionsTable } from '@/domains/question/ui/questions-table';
 import { SessionsTable } from '@/domains/session/ui/sessions-table';
 
 export const Route = createFileRoute('/app/games/$gameId/')({

@@ -2,7 +2,7 @@ import { useRouteContext, useRouter } from '@tanstack/react-router';
 import { FormEventHandler, useState } from 'react';
 import { toast } from 'sonner';
 
-import { createQuestion } from '@/domains/qna/functions/create-question.function';
+import { createQuestion } from '@/domains/question/functions/create-question.function';
 import { FormSubmitButton } from '@/domains/shared/components/form-submit-button';
 import {
   Dialog,
@@ -43,15 +43,13 @@ export function NewQuestionModal({
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     if (!user) return;
 
-    const rightAnswerIndex = parseInt(
-      e.currentTarget.elements['correct_answer'].value
-    );
-
     newQuestionMutation.mutate({
       data: {
         content: e.currentTarget.elements['content'].value,
         game_id: gameId,
-        right_answer_index: rightAnswerIndex,
+        right_answer_index: parseInt(
+          e.currentTarget.elements['correct_answer'].value
+        ),
         answer_1_content: e.currentTarget.elements['answer_1_content'].value,
         answer_2_content: e.currentTarget.elements['answer_2_content'].value,
         answer_3_content: e.currentTarget.elements['answer_3_content'].value,

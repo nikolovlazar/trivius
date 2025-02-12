@@ -11,8 +11,9 @@ import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
 import { Game } from '@/domains/game/types/game';
-import { Question } from '@/domains/qna/types/question';
-import { NewQuestionModal } from '@/domains/qna/ui/new-question-modal';
+import { Question } from '@/domains/question/types/question';
+import { NewQuestionModal } from '@/domains/question/ui/new-question-modal';
+import { UpdateQuestionModal } from '@/domains/question/ui/update-question-modal';
 import { ConfirmDeletion } from '@/domains/shared/components/confirm-deletion';
 import { Button } from '@/domains/shared/components/ui/button';
 import { Input } from '@/domains/shared/components/ui/input';
@@ -31,6 +32,8 @@ import {
   TooltipTrigger,
 } from '@/domains/shared/components/ui/tooltip';
 import { useMutation } from '@/domains/shared/hooks/use-mutation';
+
+import { updateQuestion } from '../functions/update-question.function';
 
 type Props = {
   questions: Question[];
@@ -55,13 +58,8 @@ export function QuestionsTable({ questions, game, userId }: Props) {
       toast.success('Question deleted!');
       router.invalidate();
     },
-  });
-
-  const updateQuestionMutation = useMutation({
-    fn: () => Promise.resolve(),
-    onSuccess: () => {
-      toast.success('Question updated!');
-      router.invalidate();
+    onFailure: ({ error }) => {
+      toast.error(error.message);
     },
   });
 
@@ -71,15 +69,6 @@ export function QuestionsTable({ questions, game, userId }: Props) {
 
     await deleteQuestionMutation.mutate({
       data: { id: deletingQuestion.id },
-    });
-  };
-
-  const handleQuestionUpdate = async (
-    questionId: number,
-    newValue: boolean
-  ) => {
-    await updateQuestionMutation.mutate({
-      data: { id: questionId, open: newValue },
     });
   };
 
@@ -229,13 +218,13 @@ export function QuestionsTable({ questions, game, userId }: Props) {
         />
       )}
 
-      {/* {updatingQuestion && (
+      {updatingQuestion && (
         <UpdateQuestionModal
           isOpen={!!updatingQuestion}
           onClose={() => setUpdatingQuestion(undefined)}
           question={updatingQuestion}
         />
-      )} */}
+      )}
 
       {addQuestionModalOpened && (
         <NewQuestionModal

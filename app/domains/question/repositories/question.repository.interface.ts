@@ -3,7 +3,7 @@ import type {
   Question,
   QuestionInsert,
   QuestionUpdate,
-} from '@/domains/qna/types/question';
+} from '@/domains/question/types/question';
 
 export interface IQuestionRepository {
   get(id: Question['id']): Promise<Question>;

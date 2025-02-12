@@ -1,7 +1,7 @@
 import { GameRepository } from '@/domains/game/repositories/game.repository';
 import type { IGameRepository } from '@/domains/game/repositories/game.repository.interface';
-import { QuestionRepository } from '@/domains/qna/repositories/question.repository';
-import type { IQuestionRepository } from '@/domains/qna/repositories/question.repository.interface';
+import { QuestionRepository } from '@/domains/question/repositories/question.repository';
+import type { IQuestionRepository } from '@/domains/question/repositories/question.repository.interface';
 import { SessionRepository } from '@/domains/session/repositories/session.repository';
 import type { ISessionRepository } from '@/domains/session/repositories/session.repository.interface';
 

@@ -1,12 +1,12 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 
 import { Game } from '@/domains/game/types/game';
-import type { IQuestionRepository } from '@/domains/qna/repositories/question.repository.interface';
+import type { IQuestionRepository } from '@/domains/question/repositories/question.repository.interface';
 import type {
   Question,
   QuestionInsert,
   QuestionUpdate,
-} from '@/domains/qna/types/question';
+} from '@/domains/question/types/question';
 import { getSupabaseServerClient } from '@/domains/shared/utils/supabase/server';
 
 export class QuestionRepository implements IQuestionRepository {
@@ -46,9 +46,7 @@ export class QuestionRepository implements IQuestionRepository {
   async update(data: QuestionUpdate): Promise<Question> {
     const { data: updated, error } = await this._db
       .from('questions')
-      .update({
-        content: data.content,
-      })
+      .update(data)
       .eq('id', data.id)
       .select()
       .single<Question>();
